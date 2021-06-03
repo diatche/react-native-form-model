@@ -4,11 +4,13 @@
     "description": "An easily testable and opinionated React Native form model builder written in pure JavaScript.",
     "author": "Pavel Diatchenko <diatche@gmail.com>",
     "license": "MIT",
-    "main": "dist/reactnative/index.js",
+    "repository": "https://github.com/diatche/react-native-form-model",
+    "main": "dist/index.js",
     "files": [
-        "dist"
+        "dist",
+        "src"
     ],
-    "types": "dist/reactnative/index.d.ts",
+    "types": "dist/index.d.ts",
     "scripts": {
         "test": "jest",
         "coverage": "jest --coverage",

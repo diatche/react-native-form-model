@@ -32,14 +32,14 @@ let rnConfig = {
     output: [
         {
             ...rnOutputDefaults,
-            dir: 'dist/reactnative',
+            dir: 'dist',
             format: 'es',
             sourcemap: true,
         },
     ],
     plugins: [
         typescript({
-            outDir: 'dist/reactnative',
+            outDir: 'dist',
             jsx: 'react',
             types: ['react', 'react-native'],
         }),

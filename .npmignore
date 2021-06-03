@@ -107,7 +107,6 @@ typings/
 
 # Project
 temp
-src
 tests
 examples
 tsconfig.json
