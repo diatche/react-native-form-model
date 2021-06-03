@@ -80,7 +80,6 @@ typings/
 
 # Nuxt.js build / generate output
 .nuxt
-dist
 
 # Gatsby files
 .cache/
@@ -103,18 +102,15 @@ dist
 # TernJS port file
 .tern-port
 
-# Project
-temp/
-package-lock.json
-temp/
-
-# Gun
-radata/
-radata*
-
 # Private
 *.local
 
 # Project
-dist
 temp
+src
+tests
+examples
+tsconfig.json
+package-lock.json
+.vscode
+.github

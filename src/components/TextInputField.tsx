@@ -1,0 +1,112 @@
+import React from 'react';
+import _ from 'lodash';
+import ControlField, {
+    ControlFieldProps,
+    ControlFieldState,
+} from './ControlField';
+import { TextInput as NativeTextInput, TextInputProps } from 'react-native';
+
+type OmittedTextInputProps =
+    | 'value'
+    | 'parse'
+    | 'validate'
+    | 'format'
+    | 'onChangeText'
+    | 'onSubmitEditing'
+    | 'onEndEditing'
+    | 'onBlur'
+    | 'onFocus'
+    | 'onValueChange'
+    | 'onValidation';
+
+const kOmitTextInputProps: OmittedTextInputProps[] = [
+    'value',
+    'parse',
+    'validate',
+    'format',
+    'onChangeText',
+    'onSubmitEditing',
+    'onEndEditing',
+    'onBlur',
+    'onFocus',
+    'onValueChange',
+    'onValidation',
+];
+
+type TextInputForwardProps = Omit<TextInputProps, OmittedTextInputProps>;
+
+export interface TextInputFieldProps<T>
+    extends ControlFieldProps<T, string>,
+        TextInputForwardProps {
+    secure?: boolean;
+}
+export interface TextInputFieldState<T> extends ControlFieldState<T, string> {}
+
+/** @deprecated */
+export default class TextInputField<T = string> extends ControlField<
+    T,
+    string,
+    TextInputFieldProps<T>,
+    TextInputFieldState<T>
+> {
+    textInputRef = React.createRef<NativeTextInput>();
+
+    get isCustom() {
+        return true;
+    }
+
+    focus() {
+        this.textInputRef.current?.focus();
+    }
+
+    blur() {
+        this.textInputRef.current?.blur();
+    }
+
+    renderCustom() {
+        const {
+            theme,
+            secure = false,
+            clearTextOnFocus = false,
+            style = {},
+            textStyle = {},
+            multiline = false,
+        } = this.props;
+        const { userInput = '', error } = this.state;
+
+        const { textAlignVertical = multiline ? 'top' : 'auto' } = this.props;
+
+        const forwardProps = _.omit(this.props, kOmitTextInputProps);
+
+        let commonProps: TextInputProps = {
+            onChangeText: userInput => this.handleUserInput({ userInput }),
+            onSubmitEditing: event => this.handleBlur(event),
+            onEndEditing: event => this.handleBlur(event),
+            onBlur: event => this.handleBlur(event),
+            onFocus: event => {
+                if (clearTextOnFocus) {
+                    // TODO: Clear text manually. See [task](https://trello.com/c/2DGxwivo)
+                }
+                return this.handleFocus(event);
+            },
+            clearTextOnFocus,
+            secureTextEntry: secure,
+            style: [style, textStyle],
+            selectionColor: theme.colors.primary,
+            textAlignVertical,
+        };
+
+        let combinedProps = { ...forwardProps, ...commonProps };
+        if (combinedProps.disabled) {
+            combinedProps.editable = false;
+        }
+
+        return (
+            <NativeTextInput
+                ref={this.textInputRef}
+                {...combinedProps}
+                value={userInput}
+            />
+        );
+    }
+}
