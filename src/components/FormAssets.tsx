@@ -29,7 +29,7 @@ export default class FormAssets implements FormAssetsConfig {
     }
 
     static set shared(shared: FormAssets) {
-        if (!(this._shared instanceof FormAssets)) {
+        if (!(shared instanceof FormAssets)) {
             throw new Error('Invalid FormAssets instance');
         }
         this._shared = shared;
