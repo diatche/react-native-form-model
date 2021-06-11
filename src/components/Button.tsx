@@ -3,6 +3,7 @@ import {
     StyleProp,
     StyleSheet,
     TextProps,
+    TextStyle,
     TouchableHighlightProps,
     View,
     ViewProps,
@@ -27,10 +28,11 @@ export interface TitleProps extends TextProps {
 export interface ButtonProps extends TouchableHighlightProps {
     title: string | ((props: TitleProps) => React.ReactNode);
     icon?: null | false | ((props: ChildProps) => React.ReactNode);
-    mode?: 'text' | 'contained';
+    mode?: 'contained' | 'outline' | 'text';
     compact?: boolean;
     loading?: boolean;
     contentContainerStyle?: StyleProp<ViewStyle>;
+    textStyle?: StyleProp<TextStyle>;
     color?: string;
     activityIndicatorSize?: number;
 }
@@ -42,6 +44,7 @@ const Button: React.FC<ButtonProps> = ({
     compact = false,
     style,
     contentContainerStyle,
+    textStyle,
     disabled,
     loading = false,
     color,
@@ -51,22 +54,30 @@ const Button: React.FC<ButtonProps> = ({
     const theme = useTheme() as PaperThemeWithForm;
     let primaryColor = color || theme.colors.primary;
     let stateColor = disabled ? theme.colors.disabled : primaryColor;
-    let backgroundColor = '';
+    let containerStyle: ViewStyle = {
+        borderRadius: theme.roundness,
+    };
     const selectColor = transparent(stateColor);
     let accessoryStyle: StyleProp<ViewStyle> | undefined = undefined;
     if (!compact) {
         accessoryStyle = styles.nonCompactAccessory;
     }
 
-    if (mode === 'contained') {
-        backgroundColor = stateColor;
-        stateColor = theme.colors.background;
+    switch (mode) {
+        case 'contained':
+            containerStyle.backgroundColor = stateColor;
+            stateColor = theme.colors.background;
+            break;
+        case 'outline':
+            containerStyle.borderColor = stateColor;
+            containerStyle.borderWidth = 1;
+            break;
     }
 
     const titleProps: TitleProps = {
         selectable: false,
         color: stateColor,
-        style: [styles.buttonText, { color: stateColor }],
+        style: [styles.buttonText, { color: stateColor }, textStyle],
     };
     const titleView =
         typeof title === 'string' ? (
@@ -108,8 +119,7 @@ const Button: React.FC<ButtonProps> = ({
         <View
             style={[
                 compact ? styles.compactContainer : styles.container,
-                { borderRadius: theme.roundness },
-                backgroundColor ? { backgroundColor } : {},
+                containerStyle,
                 style,
             ]}
         >
