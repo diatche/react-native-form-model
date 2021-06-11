@@ -6,4 +6,4 @@ Changes on `main` will be listed here.
 
 ### Features
 
--   Added `textStyle` and `outline` mode to `Button`.
+-   [[#1](https://github.com/diatche/react-native-form-model/pull/1)] Added `textStyle` and `outline` mode to `Button`.
