@@ -5,6 +5,8 @@
 
 An easily testable and opinionated React Native form model builder written in pure JavaScript.
 
+_Note that this package is in early stages of development and there may be breaking changes within semantically compatible versions. See [change log](CHANGELOG.md)._
+
 ## Installation
 
 ```sh
