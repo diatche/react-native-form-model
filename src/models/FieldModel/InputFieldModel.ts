@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { lz } from '../../util/locale';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -134,10 +135,22 @@ export default class InputFieldModel<T, I = string>
     normalizedValidationResult(
         value: T | undefined
     ): InputFieldValidationResult {
-        let validation = this.validation?.(value);
+        let validation: InputFieldValidationValue | undefined;
         let valid = true;
         let error: Error | undefined;
-        if (typeof validation === 'undefined') {
+        try {
+            validation = this.validation?.(value);
+        } catch (err) {
+            if (!(err instanceof Error)) {
+                err = new Error(
+                    String(err?.message || err || 'Unknown validation error')
+                );
+            }
+            error = err;
+        }
+        if (error) {
+            valid = false;
+        } else if (typeof validation === 'undefined') {
             // Assume valid
         } else if (typeof validation === 'boolean') {
             valid = validation;
@@ -203,7 +216,7 @@ export default class InputFieldModel<T, I = string>
             this.errors.next([]);
         }
 
-        let didChangeValue = value !== this.value.value;
+        let didChangeValue = !_.isEqual(value, this.value.value);
         if (didChangeValue) {
             this.value.next(value!);
         }

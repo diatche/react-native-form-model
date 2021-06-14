@@ -56,8 +56,8 @@ export default class LabelField<
         } as S;
     }
 
-    componentDidUpdate(prevProps: P) {
-        if (this.props.value !== prevProps.value) {
+    componentDidUpdate(prevProps: P, prevState: S, snapshot: any) {
+        if (!_.isEqual(this.props.value, prevProps.value)) {
             this.setState({
                 value: this.props.value,
             });
@@ -70,7 +70,12 @@ export default class LabelField<
 
     format(value: T): string {
         if (this.props.format) {
-            return this.props.format(value);
+            try {
+                return this.props.format(value);
+            } catch (err) {
+                console.error('Error during formatting: ' + err.message);
+                return '';
+            }
         } else if (typeof value === 'undefined' || value === null) {
             return '';
         } else {

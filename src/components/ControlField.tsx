@@ -6,7 +6,7 @@ import LabelField, { LabelFieldProps, LabelFieldState } from './LabelField';
 export interface ControlFieldProps<OutputType, InputType>
     extends LabelFieldProps<OutputType> {
     /** How to parse input value into output value. */
-    parse?: (userInput: InputType) => { value?: OutputType; error?: any };
+    parse?: (userInput: InputType) => Partial<ParseResult<OutputType>>;
     /** How to clean user input for display. Defaults to using format(). */
     encode?: (value: OutputType) => InputType;
     validate?: (value: OutputType) => { valid: boolean; error?: any };
@@ -16,12 +16,20 @@ export interface ControlFieldProps<OutputType, InputType>
     onBlur?: (event: any) => void;
 }
 
-export interface ControlFieldState<OutputType, InputType>
-    extends LabelFieldState<OutputType> {
-    /** User input value. */
-    userInput: InputType;
+export interface ParseResult<OutputType> {
+    /** The final value. */
+    value?: OutputType;
+    /** User input error. */
+    error?: any;
     /** Is user input prasable. */
     parsable: boolean;
+}
+
+export interface ControlFieldState<OutputType, InputType>
+    extends LabelFieldState<OutputType>,
+        Omit<ParseResult<OutputType>, 'value'> {
+    /** User input value. */
+    userInput: InputType;
     /** Did current value pass validation. */
     valid: boolean;
 }
@@ -48,13 +56,20 @@ export default class ControlField<
         this.validate();
     }
 
-    componentDidUpdate(prevProps: P) {
+    getSnapshotBeforeUpdate(prevProps: P, prevState: S) {
         if (
             !this.editing &&
-            this.props.value !== prevProps.value &&
-            this.props.value !== this.state.value
+            !_.isEqual(this.props.value, prevProps.value) &&
+            !_.isEqual(this.props.value, this.state.value)
         ) {
-            this.setValue(this.props.value);
+            return { value: this.props.value };
+        }
+        return null;
+    }
+
+    componentDidUpdate(prevProps: P, prevState: S, snapshot: any) {
+        if (snapshot) {
+            this.setValue(snapshot.value);
         }
     }
 
@@ -83,12 +98,17 @@ export default class ControlField<
         return v;
     }
 
-    parse(userInput: I): { value?: O; error?: any; parsable: boolean } {
+    parse(userInput: I): ParseResult<O> {
         let { parse } = this.props;
         if (!parse) {
             return { value: userInput as any, parsable: true };
         }
-        let data = parse(userInput);
+        let data: Partial<ParseResult<O>> = {};
+        try {
+            data = parse(userInput);
+        } catch (err) {
+            data = { value: undefined, error: err, parsable: false };
+        }
         if (!('value' in data)) {
             throw new Error(
                 'Expected an object with the value, instead got: ' + data
