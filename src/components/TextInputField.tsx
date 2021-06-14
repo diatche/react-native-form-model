@@ -4,7 +4,13 @@ import ControlField, {
     ControlFieldProps,
     ControlFieldState,
 } from './ControlField';
-import { TextInput as NativeTextInput, TextInputProps } from 'react-native';
+import {
+    Platform,
+    TextInput as NativeTextInput,
+    TextInputProps,
+} from 'react-native';
+
+const isWeb = Platform.OS === 'web';
 
 type OmittedTextInputProps =
     | 'value'
@@ -91,7 +97,7 @@ export default class TextInputField<T = string> extends ControlField<
             },
             clearTextOnFocus,
             secureTextEntry: secure,
-            style: [style, textStyle],
+            style: [isWeb ? kTextFieldWebStyle : undefined, style, textStyle],
             selectionColor: theme.colors.primary,
             textAlignVertical,
         };
@@ -110,3 +116,9 @@ export default class TextInputField<T = string> extends ControlField<
         );
     }
 }
+
+const kTextFieldWebStyle: any = {
+    /** Remove browser specific styling. */
+    appearance: 'none',
+    borderRadius: 0,
+};

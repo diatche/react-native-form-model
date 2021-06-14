@@ -1,6 +1,9 @@
 export { default as Button } from './Button';
 export * from './Button';
 
+export { default as ClearButton } from './ClearButton';
+export * from './ClearButton';
+
 export { default as ControlField } from './ControlField';
 export * from './ControlField';
 

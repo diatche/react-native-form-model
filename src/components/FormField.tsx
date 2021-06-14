@@ -31,7 +31,9 @@ import TextInputField from './TextInputField';
 import TimeInputField from './TimeInputField';
 import { kAlignmentToJustifyContentMap } from './styleUtil';
 import ErrorFieldModel from '../models/FieldModel/ErrorFieldModel';
-import InputFieldModel from '../models/FieldModel/InputFieldModel';
+import InputFieldModel, {
+    InputFieldState,
+} from '../models/FieldModel/InputFieldModel';
 import DatePicker from './DatePicker';
 import Picker, { PickerItem } from './Picker';
 import { BehaviorSubject } from 'rxjs';
@@ -67,12 +69,16 @@ const FormField: React.FC<FormFieldProps> = ({
     };
     const fieldWithBorderStyle: ViewStyle = {
         ...getFieldWithBorderStyle(theme),
-        borderRadius: Math.max(
-            0,
-            formStyle.roundness -
-                Math.max(formStyle.marginLeft, formStyle.marginRight)
-        ),
+        borderRadius: Math.max(0, formStyle.roundness - 3),
         borderWidth: 0,
+        marginLeft: 3,
+        marginRight: 3,
+        marginTop: 3,
+        marginBottom: 3,
+        paddingLeft: formStyle.paddingLeft + formStyle.marginLeft - 3,
+        paddingRight: formStyle.paddingRight + formStyle.marginRight - 3,
+        paddingTop: formStyle.paddingTop + formStyle.marginTop - 3,
+        paddingBottom: formStyle.paddingBottom + formStyle.marginBottom - 3,
     };
     const errors = useBehaviorSubject(field.errors);
     const showError = useBehaviorSubject(
@@ -142,7 +148,8 @@ const FormField: React.FC<FormFieldProps> = ({
                 }
             },
         });
-        const editingStateRef = React.useRef(field.getState());
+        const editingStateRef =
+            React.useRef<InputFieldState<any> | undefined>(undefined);
         invisibleContainerField = (
             <TextInputField
                 {...otherProps}
@@ -168,7 +175,10 @@ const FormField: React.FC<FormFieldProps> = ({
                         field.setState(state);
                     }
                 }}
-                onBlur={() => field.setState(editingStateRef.current)}
+                onBlur={() =>
+                    editingStateRef.current &&
+                    field.setState(editingStateRef.current)
+                }
                 parse={x => field.parseState(x)}
                 format={x => field.formatValue(x)}
                 validate={x => field.normalizedValidationResult(x)}
@@ -178,7 +188,9 @@ const FormField: React.FC<FormFieldProps> = ({
                 autoCapitalize={field.autoCapitalize}
                 secure={field.type === 'secure'}
                 autoFocus={field.autoFocus}
+                selectTextOnFocus={field.selectTextOnFocus}
                 clearTextOnFocus={field.clearTextOnFocus}
+                clearButtonMode={field.clearButtonMode}
                 align={field.align}
                 style={[
                     styles.container,
@@ -311,7 +323,8 @@ const FormField: React.FC<FormFieldProps> = ({
         } else {
             const fieldRef = React.useRef<TimeInputField>(null);
             field.viewRef = fieldRef;
-            const editingStateRef = React.useRef(field.getState());
+            const editingStateRef =
+                React.useRef<InputFieldState<any> | undefined>(undefined);
             invisibleContainerField = (
                 <TimeInputField
                     {...otherProps}
@@ -323,10 +336,16 @@ const FormField: React.FC<FormFieldProps> = ({
                     format={time => field.formatTime(time)}
                     validate={x => field.normalizedValidationResult(x)}
                     placeholder={field.formatDate(moment())}
+                    selectTextOnFocus={field.selectTextOnFocus}
+                    clearTextOnFocus={field.clearTextOnFocus}
+                    clearButtonMode={field.clearButtonMode}
                     onValueChange={state => {
                         editingStateRef.current = state;
                     }}
-                    onBlur={() => field.setState(editingStateRef.current)}
+                    onBlur={() =>
+                        editingStateRef.current &&
+                        field.setState(editingStateRef.current)
+                    }
                     align={field.align}
                     style={[
                         styles.container,
@@ -342,12 +361,11 @@ const FormField: React.FC<FormFieldProps> = ({
     } else if (field instanceof OptionInputFieldModel) {
         switch (field.type) {
             case 'segmentedControl': {
-                const controlStyle: ViewStyle = { justifyContent };
                 const { value: selectedIndex } = useObservable(
                     () => field.selectedIndex(),
                     [field.value]
                 );
-                inlineViews.push(
+                invisibleContainerField = (
                     <SegmentedControl
                         key={`${field.key}_segmentedControl`}
                         selectedIndex={selectedIndex}
@@ -360,8 +378,8 @@ const FormField: React.FC<FormFieldProps> = ({
                         clearButtonMode={field.clearButtonMode}
                         onSelect={i => field.selectIndex(i)}
                         style={[
-                            styles.field,
-                            controlStyle,
+                            styles.container,
+                            containerStyle,
                             fieldWithBorderStyle,
                         ]}
                         textStyle={inputTextStyle}

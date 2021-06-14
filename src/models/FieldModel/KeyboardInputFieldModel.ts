@@ -6,15 +6,23 @@ import InputFieldModel, {
     ParsedInputFieldModelOptions,
 } from './InputFieldModel';
 
-interface KeyboardInputFieldModelOwnOptions {
-    type: KeyboardInputFieldType;
-    keyboardType: KeyboardTypeOptions;
-    textContentType?: TextInputProps['textContentType'];
+export interface KeyboardInputFieldModelBaseOptions
+    extends Pick<
+        TextInputProps,
+        'clearTextOnFocus' | 'selectTextOnFocus' | 'clearButtonMode'
+    > {
     optional?: boolean;
     autoFocus?: boolean;
-    multiline?: boolean;
-    clearTextOnFocus?: boolean;
-    autoCapitalize?: TextInputProps['autoCapitalize'];
+}
+
+export interface KeyboardInputFieldModelOwnOptions
+    extends KeyboardInputFieldModelBaseOptions,
+        Pick<
+            TextInputProps,
+            'textContentType' | 'autoCapitalize' | 'multiline'
+        > {
+    type: KeyboardInputFieldType;
+    keyboardType: KeyboardTypeOptions;
 
     /**
      * If true, then the value will be updated as the user types.
@@ -49,7 +57,9 @@ export default class KeyboardInputFieldModel<T>
     optional: boolean;
     multiline: boolean;
     autoFocus: boolean;
-    clearTextOnFocus: boolean;
+    clearTextOnFocus: TextInputProps['clearTextOnFocus'];
+    selectTextOnFocus: TextInputProps['selectTextOnFocus'];
+    clearButtonMode: TextInputProps['clearButtonMode'];
     autoCapitalize: TextInputProps['autoCapitalize'] | undefined;
     submitOnChangeValue: boolean;
 
@@ -70,12 +80,16 @@ export default class KeyboardInputFieldModel<T>
             multiline = false,
             autoFocus = false,
             clearTextOnFocus = false,
+            selectTextOnFocus = false,
+            clearButtonMode = 'never',
             submitOnChangeValue = false,
         } = optionsWithDefaults;
 
         this.multiline = multiline;
         this.autoFocus = autoFocus;
         this.clearTextOnFocus = clearTextOnFocus;
+        this.selectTextOnFocus = selectTextOnFocus;
+        this.clearButtonMode = clearButtonMode;
         this.submitOnChangeValue = submitOnChangeValue;
     }
 

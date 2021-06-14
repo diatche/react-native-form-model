@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { Text, TouchableRipple, useTheme } from 'react-native-paper';
 import { PaperThemeWithForm } from '../models/FormStyle';
-import FormAssets from './FormAssets';
+import ClearButton from './ClearButton';
 
 const kItemMargin = 6;
 
@@ -132,26 +132,11 @@ const SegmentedControl = React.memo(
             <View {...otherProps} style={[styles.container, style]}>
                 {items}
                 {showClearButton && (
-                    <TouchableRipple
+                    <ClearButton
                         disabled={disabled}
-                        style={[
-                            styles.ripple,
-                            {
-                                marginLeft: kItemMargin,
-                                borderRadius: theme.roundness,
-                            },
-                        ]}
-                        rippleColor={rippleColor}
-                        underlayColor={rippleColor}
+                        style={{ marginLeft: kItemMargin }}
                         onPress={() => handleSelect(-1)}
-                    >
-                        {FormAssets.shared.ClearIcon && (
-                            <FormAssets.shared.ClearIcon
-                                size={22}
-                                color={selectedColor}
-                            />
-                        )}
-                    </TouchableRipple>
+                    />
                 )}
             </View>
         );
