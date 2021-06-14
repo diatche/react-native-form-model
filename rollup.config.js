@@ -56,10 +56,17 @@ export default args => {
             plugins: [
                 ...task.plugins,
                 copy({
-                    targets: task.output.map(output => ({
-                        src: output.dir,
-                        dest: args.copy,
-                    })),
+                    targets: task.output
+                        .map(output => ({
+                            src: output.dir,
+                            dest: args.copy,
+                        }))
+                        .concat([
+                            {
+                                src: 'src',
+                                dest: args.copy,
+                            },
+                        ]),
                     hook: 'writeBundle', // Copy after writing to disk
                     verbose: true,
                 }),
