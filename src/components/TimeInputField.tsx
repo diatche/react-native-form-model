@@ -59,6 +59,8 @@ export default class TimeInputField extends Component<
                 parse={args => this.parse(args)}
                 format={args => this.format(args)}
                 keyboardType='numbers-and-punctuation'
+                autoCorrect={false}
+                autoCompleteType='off'
             />
         );
     }

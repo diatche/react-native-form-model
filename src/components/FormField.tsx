@@ -188,7 +188,9 @@ const FormField: React.FC<FormFieldProps> = ({
                 autoCapitalize={field.autoCapitalize}
                 secure={field.type === 'secure'}
                 autoFocus={field.autoFocus}
+                selectTextOnFocus={field.selectTextOnFocus}
                 clearTextOnFocus={field.clearTextOnFocus}
+                clearButtonMode={field.clearButtonMode}
                 align={field.align}
                 style={[
                     styles.container,
@@ -334,6 +336,9 @@ const FormField: React.FC<FormFieldProps> = ({
                     format={time => field.formatTime(time)}
                     validate={x => field.normalizedValidationResult(x)}
                     placeholder={field.formatDate(moment())}
+                    selectTextOnFocus={field.selectTextOnFocus}
+                    clearTextOnFocus={field.clearTextOnFocus}
+                    clearButtonMode={field.clearButtonMode}
                     onValueChange={state => {
                         editingStateRef.current = state;
                     }}
@@ -356,7 +361,6 @@ const FormField: React.FC<FormFieldProps> = ({
     } else if (field instanceof OptionInputFieldModel) {
         switch (field.type) {
             case 'segmentedControl': {
-                const controlStyle: ViewStyle = { justifyContent };
                 const { value: selectedIndex } = useObservable(
                     () => field.selectedIndex(),
                     [field.value]

@@ -5,23 +5,27 @@ import { MaybeObservable } from '../../util/reactUtil';
 import InputFieldModel, {
     ParsedInputFieldModelOptions,
 } from './InputFieldModel';
+import { TextInputProps } from 'react-native';
+import { KeyboardInputFieldModelBaseOptions } from './KeyboardInputFieldModel';
 
 export interface TimeInputFieldModelOptions
-    extends ParsedInputFieldModelOptions<Duration, Duration> {
+    extends ParsedInputFieldModelOptions<Duration, Duration>,
+        KeyboardInputFieldModelBaseOptions {
     refDay?: MaybeObservable<Moment | undefined>;
     futureDisabled?: boolean;
-    autoFocus?: boolean;
-    optional?: boolean;
 }
 
-export default class TimeInputFieldModel extends InputFieldModel<
-    Duration,
-    Duration
-> {
+export default class TimeInputFieldModel
+    extends InputFieldModel<Duration, Duration>
+    implements TimeInputFieldModelOptions
+{
     refDay: MaybeObservable<Moment | undefined> | undefined;
     futureDisabled: boolean;
     autoFocus: boolean;
     optional: boolean;
+    clearTextOnFocus: boolean;
+    selectTextOnFocus: boolean;
+    clearButtonMode: TextInputProps['clearButtonMode'];
 
     private _refDay?: Moment;
     private _refDaySub?: Subscription;
@@ -54,11 +58,17 @@ export default class TimeInputFieldModel extends InputFieldModel<
             autoFocus = false,
             futureDisabled = false,
             optional = false,
+            clearTextOnFocus = false,
+            selectTextOnFocus = false,
+            clearButtonMode = 'never',
         } = options;
         this.refDay = options.refDay;
         this.futureDisabled = futureDisabled;
         this.autoFocus = autoFocus;
         this.optional = optional;
+        this.clearTextOnFocus = clearTextOnFocus;
+        this.selectTextOnFocus = selectTextOnFocus;
+        this.clearButtonMode = clearButtonMode;
     }
 
     getRefDay() {
