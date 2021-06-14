@@ -4,6 +4,10 @@
 
 Changes on `main` will be listed here.
 
+## 0.3.0
+
+15 Jun 2021
+
 ### Features
 
 -   [[#3](https://github.com/diatche/react-native-form-model/pull/3)] Added `selectTextOnFocus` and `clearButtonMode` to `KeyboardInputFieldModel` and `TimeInputFieldModel`.
