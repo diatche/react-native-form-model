@@ -361,7 +361,7 @@ const FormField: React.FC<FormFieldProps> = ({
                     () => field.selectedIndex(),
                     [field.value]
                 );
-                inlineViews.push(
+                invisibleContainerField = (
                     <SegmentedControl
                         key={`${field.key}_segmentedControl`}
                         selectedIndex={selectedIndex}
@@ -374,8 +374,8 @@ const FormField: React.FC<FormFieldProps> = ({
                         clearButtonMode={field.clearButtonMode}
                         onSelect={i => field.selectIndex(i)}
                         style={[
-                            styles.field,
-                            controlStyle,
+                            styles.container,
+                            containerStyle,
                             fieldWithBorderStyle,
                         ]}
                         textStyle={inputTextStyle}
