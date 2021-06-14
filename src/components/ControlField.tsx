@@ -42,6 +42,7 @@ export default class ControlField<
     S extends ControlFieldState<O, I> = ControlFieldState<O, I>
 > extends LabelField<O, P, S> {
     editing = false;
+    didChangeValue = false;
 
     constructor(props: P) {
         super(props);
@@ -135,6 +136,7 @@ export default class ControlField<
             return;
         }
         this.editing = true;
+        this.didChangeValue = false;
         this.props.onFocus?.(event);
     }
 
@@ -143,7 +145,10 @@ export default class ControlField<
             return;
         }
         this.editing = false;
-        this.handleUserInput(this.state);
+        if (this.didChangeValue) {
+            this.didChangeValue = false;
+            this.handleUserInput(this.state);
+        }
         this.submit();
         this.props.onBlur?.(event);
     }
