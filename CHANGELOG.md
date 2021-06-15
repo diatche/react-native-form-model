@@ -4,6 +4,10 @@
 
 Changes on `main` will be listed here.
 
+### Features
+
+-   [[#4](https://github.com/diatche/react-native-form-model/pull/4)] Picker is no longer limited to string and number values.
+
 ## 0.3.0
 
 15 Jun 2021

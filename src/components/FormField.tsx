@@ -37,6 +37,7 @@ import InputFieldModel, {
 import DatePicker from './DatePicker';
 import Picker, { PickerItem } from './Picker';
 import { BehaviorSubject } from 'rxjs';
+import _ from 'lodash';
 
 // TODO: Optimise updates with React.memo().
 
@@ -390,13 +391,16 @@ const FormField: React.FC<FormFieldProps> = ({
             case 'picker': {
                 const { value } = useObservable(field.value);
                 let possibleValues = field.possibleValues;
-                if (field.optional) {
+                if (field.optional && !_.find(possibleValues, undefined)) {
                     possibleValues = [undefined, ...possibleValues];
                 }
+                const selectedIndex = field.indexOf(value);
                 invisibleContainerField = (
                     <Picker
                         key={`${field.key}_picker`}
-                        selectedValue={value}
+                        selectedValue={
+                            selectedIndex >= 0 ? selectedIndex : undefined
+                        }
                         selectedTitle={field.formatValue(value)}
                         style={[
                             styles.container,
@@ -414,7 +418,7 @@ const FormField: React.FC<FormFieldProps> = ({
                             <PickerItem
                                 key={i}
                                 label={field.formatValue(value)}
-                                value={value}
+                                value={i}
                                 color={inputColor}
                             />
                         ))}

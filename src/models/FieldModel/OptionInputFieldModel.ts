@@ -37,10 +37,12 @@ export default class OptionInputFieldModel<T = string> extends InputFieldModel<
         this.clearButtonMode = clearButtonMode;
     }
 
+    indexOf(value: T): number {
+        return this.possibleValues.indexOf(value);
+    }
+
     selectedIndex(): Observable<number> {
-        return this.value.pipe(
-            map(value => this.possibleValues.indexOf(value))
-        );
+        return this.value.pipe(map(value => this.indexOf(value)));
     }
 
     selectIndex(index: number) {
