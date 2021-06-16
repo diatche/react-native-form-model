@@ -4,6 +4,10 @@
 
 Changes on `main` will be listed here.
 
+## 0.4.0
+
+16 Jun 2021
+
 ### Features
 
 -   [[#4](https://github.com/diatche/react-native-form-model/pull/4)] Option input field is no longer limited to string and number values.
