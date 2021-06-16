@@ -2,6 +2,7 @@ import React from 'react';
 import { Picker as NativePicker } from '@react-native-picker/picker';
 import {
     Platform,
+    ScrollView,
     StyleProp,
     StyleSheet,
     TextStyle,
@@ -11,35 +12,37 @@ import {
 import FormLabel from './FormLabel';
 import { Modal, Portal, useTheme } from 'react-native-paper';
 import { PaperThemeWithForm } from '../models/FormStyle';
+import OptionList from './OptionList';
+import _ from 'lodash';
 
 // TODO: Background color is not supported or broken on Android. See [issue](https://github.com/react-native-picker/picker/issues/112)
 
 const isIOS = Platform.OS === 'ios';
+const isAndroid = Platform.OS === 'android';
 const isWeb = Platform.OS === 'web';
 
 const isInlinePicker = isIOS;
+const nativeModeHandler = isAndroid;
 
 export interface PickerProps<T = any> extends ViewProps {
-    children: React.ReactNode | React.ReactNode[];
-    selectedTitle: string;
+    possibleValues: T[];
+    formatValue: (value: T | undefined, index: number) => string;
     disabled?: boolean;
     /**
-     * Value matching value of one of the items. Can be a string or an integer.
+     * Selected index, correspoding to `possibleValues`.
      */
-    selectedValue?: T;
+    selectedIndex: number;
     /**
      * Callback for when an item is selected. This is called with the following parameters:
-     *   - `itemValue`: the `value` prop of the item that was selected
-     *   - `itemIndex`: the index of the selected item in this picker
+     *   - `value`: the value that was selected
+     *   - `index`: the index of the selected value
      */
-    onValueChange?: (itemValue: T, itemIndex: number) => void;
+    onValueChange?: (value: T, index: number) => void;
     /**
-     * On Android, specifies how to display the selection items when the user taps on the picker:
+     * Specifies how to display the selection items when the user taps on the picker:
      *
-     *   - 'dialog': Show a modal dialog. This is the default.
-     *   - 'dropdown': Shows a dropdown anchored to the picker view
-     *
-     * @platform android
+     *   - 'dropdown': Shows a dropdown anchored to the picker view. This is the default. Not supported in iOS.
+     *   - 'dialog': Show a modal dialog.
      */
     mode?: 'dialog' | 'dropdown';
     /**
@@ -48,8 +51,7 @@ export interface PickerProps<T = any> extends ViewProps {
      */
     itemStyle?: StyleProp<TextStyle>;
     /**
-     * Prompt string for this picker, used on Android in dialog mode as the title of the dialog.
-     * @platform android
+     * Prompt string for this picker, used in dialog mode as the title of the dialog.
      */
     prompt?: string;
     /**
@@ -60,25 +62,58 @@ export interface PickerProps<T = any> extends ViewProps {
      * Color of arrow for spinner dropdown in hexadecimal format
      */
     dropdownIconColor?: string;
+    /**
+     * Color of the picker items.
+     */
+    itemColor?: string;
 }
 
 export default function Picker<T = any>({
-    selectedTitle,
-    children,
+    possibleValues,
+    formatValue,
+    selectedIndex,
+    onValueChange,
     disabled,
+    mode,
+    prompt,
     style,
     itemStyle,
-    ...props
+    itemColor,
+    ...pickerProps
 }: PickerProps<T>): JSX.Element | null {
     const theme = useTheme() as PaperThemeWithForm;
     const [visible, setVisible] = React.useState(false);
+    const pickerOverrides = {
+        selectedValue: selectedIndex,
+        mode,
+        prompt,
+        enabled: !disabled,
+        onValueChange: onValueChange
+            ? (value: number, index: number) => {
+                  onValueChange(possibleValues[index], index);
+              }
+            : undefined,
+    };
 
-    if (isInlinePicker) {
+    const createPickerItems = () =>
+        possibleValues.map((value, i) => (
+            <NativePicker.Item
+                key={i}
+                label={formatValue(value, i)}
+                value={i}
+                color={itemColor}
+            />
+        ));
+
+    if (isInlinePicker || (!nativeModeHandler && mode === 'dialog')) {
         return (
             <View style={[styles.container, style]}>
                 <FormLabel
-                    title={selectedTitle}
-                    style={itemStyle}
+                    title={formatValue(
+                        possibleValues[selectedIndex],
+                        selectedIndex
+                    )}
+                    style={[styles.label, itemStyle]}
                     textStyle={itemStyle}
                     onPress={() => setVisible(true)}
                 />
@@ -95,20 +130,37 @@ export default function Picker<T = any>({
                         ]}
                         theme={theme}
                     >
-                        <NativePicker
-                            {...props}
-                            enabled={!disabled}
-                            style={[
-                                styles.pickerOverride,
-                                isWeb ? kPickerWebStyle : undefined,
-                            ]}
-                            itemStyle={[
-                                itemStyle,
-                                styles.pickerItemStyleOverride,
-                            ]}
-                        >
-                            {children}
-                        </NativePicker>
+                        {isInlinePicker ? (
+                            <NativePicker
+                                {...pickerProps}
+                                {...pickerOverrides}
+                                style={[
+                                    styles.pickerOverride,
+                                    isWeb ? kPickerWebStyle : undefined,
+                                ]}
+                                itemStyle={[
+                                    itemStyle,
+                                    styles.pickerItemStyleOverride,
+                                ]}
+                            >
+                                {createPickerItems()}
+                            </NativePicker>
+                        ) : (
+                            <ScrollView>
+                                <OptionList
+                                    title={prompt}
+                                    items={possibleValues}
+                                    selectedIndex={selectedIndex}
+                                    onSelect={(value, index) => {
+                                        onValueChange?.(value, index);
+                                        setVisible(false);
+                                    }}
+                                    formatItem={formatValue}
+                                    itemColor={itemColor}
+                                    chechmarkColor={itemColor}
+                                />
+                            </ScrollView>
+                        )}
                     </Modal>
                 </Portal>
             </View>
@@ -116,8 +168,8 @@ export default function Picker<T = any>({
     } else {
         return (
             <NativePicker
-                {...props}
-                enabled={!disabled}
+                {...pickerProps}
+                {...pickerOverrides}
                 style={[
                     styles.inlinePicker,
                     style,
@@ -126,22 +178,24 @@ export default function Picker<T = any>({
                 ]}
                 itemStyle={[itemStyle, styles.pickerItemStyleOverride]}
             >
-                {children}
+                {createPickerItems()}
             </NativePicker>
         );
     }
 }
 
-export const PickerItem = NativePicker.Item;
-
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
-        alignItems: 'center',
+        alignItems: 'stretch',
+    },
+    label: {
+        flex: 1,
     },
     modal: {
         maxWidth: 400,
         alignSelf: 'center',
+        overflow: 'hidden',
     },
     inlinePicker: {
         minWidth: 320,

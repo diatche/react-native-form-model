@@ -1,5 +1,11 @@
 import React from 'react';
-import { StyleSheet, TextProps, View, ViewProps } from 'react-native';
+import {
+    StyleSheet,
+    TextProps,
+    TouchableOpacity,
+    View,
+    ViewProps,
+} from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
 import { PaperThemeWithForm } from '../models/FormStyle';
 
@@ -7,13 +13,15 @@ export interface FormLabelProps extends ViewProps {
     title: string | undefined;
     onPress?: TextProps['onPress'];
     textStyle?: TextProps['style'];
+    selectable?: boolean;
 }
 
-export default function FormLabel({
+export default React.memo(function FormLabel({
     title,
     onPress,
     style,
     textStyle,
+    selectable,
     ...props
 }: FormLabelProps) {
     const theme = useTheme() as PaperThemeWithForm;
@@ -22,18 +30,29 @@ export default function FormLabel({
     } else if (typeof title === 'string') {
         title = String(title);
     }
-    return (
+    const label = (
+        <Text
+            selectable={selectable}
+            style={[styles.text, textStyle]}
+            theme={theme}
+        >
+            {title}
+        </Text>
+    );
+    return onPress ? (
+        <TouchableOpacity
+            {...props}
+            onPress={onPress}
+            style={[styles.container, style]}
+        >
+            {label}
+        </TouchableOpacity>
+    ) : (
         <View {...props} style={[styles.container, style]}>
-            <Text
-                onPress={onPress}
-                style={[styles.text, textStyle]}
-                theme={theme}
-            >
-                {title}
-            </Text>
+            {label}
         </View>
     );
-}
+});
 
 const styles = StyleSheet.create({
     container: {

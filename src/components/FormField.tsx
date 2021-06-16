@@ -35,7 +35,7 @@ import InputFieldModel, {
     InputFieldState,
 } from '../models/FieldModel/InputFieldModel';
 import DatePicker from './DatePicker';
-import Picker, { PickerItem } from './Picker';
+import Picker from './Picker';
 import { BehaviorSubject } from 'rxjs';
 import _ from 'lodash';
 
@@ -360,15 +360,15 @@ const FormField: React.FC<FormFieldProps> = ({
             );
         }
     } else if (field instanceof OptionInputFieldModel) {
-        switch (field.type) {
-            case 'segmentedControl': {
+        switch (field.mode) {
+            case 'segmented': {
                 const { value: selectedIndex } = useObservable(
                     () => field.selectedIndex(),
                     [field.value]
                 );
                 invisibleContainerField = (
                     <SegmentedControl
-                        key={`${field.key}_segmentedControl`}
+                        key={`${field.key}_segmented`}
                         selectedIndex={selectedIndex}
                         disabled={field.disabled}
                         possibleValues={field.possibleValues.map(value =>
@@ -388,47 +388,36 @@ const FormField: React.FC<FormFieldProps> = ({
                 );
                 break;
             }
-            case 'picker': {
+            case 'dialog':
+            case 'dropdown': {
                 const { value } = useObservable(field.value);
-                let possibleValues = field.possibleValues;
-                if (field.optional && !_.find(possibleValues, undefined)) {
-                    possibleValues = [undefined, ...possibleValues];
-                }
                 const selectedIndex = field.indexOf(value);
                 invisibleContainerField = (
                     <Picker
                         key={`${field.key}_picker`}
-                        selectedValue={
-                            selectedIndex >= 0 ? selectedIndex : undefined
-                        }
-                        selectedTitle={field.formatValue(value)}
+                        selectedIndex={selectedIndex}
+                        possibleValues={field.possibleValues}
+                        formatValue={x => field.formatValue(x)}
                         style={[
                             styles.container,
                             containerStyle,
                             fieldWithBorderStyle,
                             inputTextStyle,
                         ]}
-                        mode='dropdown'
+                        mode={field.mode}
+                        prompt={field.prompt}
                         disabled={field.disabled}
                         itemStyle={inputTextStyle}
                         onValueChange={(value, index) => field.setInput(index)}
                         dropdownIconColor={inputColor}
-                    >
-                        {possibleValues.map((value, i) => (
-                            <PickerItem
-                                key={i}
-                                label={field.formatValue(value)}
-                                value={i}
-                                color={inputColor}
-                            />
-                        ))}
-                    </Picker>
+                        itemColor={inputColor}
+                    />
                 );
                 break;
             }
             default:
                 throw new Error(
-                    `Unknown ${field.constructor.name}#type: ${field.type}`
+                    `Unknown ${field.constructor.name}#type: ${field.mode}`
                 );
         }
     } else if (field instanceof InputFieldModel) {
