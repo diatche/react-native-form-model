@@ -1,15 +1,23 @@
 import React from 'react';
+import { ViewProps } from 'react-native';
 
-export type FormIconComponent = React.FC<{ size: number; color?: string }>;
+export interface FormIconProps extends ViewProps {
+    size: number;
+    color?: string;
+}
+
+export type FormIconComponent = React.FC<FormIconProps>;
 
 export interface FormAssetsConfig {
     ClearIcon?: FormIconComponent;
+    CheckmarkIcon?: FormIconComponent;
     LeftArrowIcon?: FormIconComponent;
     RightArrowIcon?: FormIconComponent;
 }
 
 export default class FormAssets implements FormAssetsConfig {
     ClearIcon?: FormIconComponent;
+    CheckmarkIcon?: FormIconComponent;
     LeftArrowIcon?: FormIconComponent;
     RightArrowIcon?: FormIconComponent;
 
@@ -17,6 +25,7 @@ export default class FormAssets implements FormAssetsConfig {
 
     constructor(config: FormAssetsConfig) {
         this.ClearIcon = config.ClearIcon;
+        this.CheckmarkIcon = config.CheckmarkIcon;
         this.LeftArrowIcon = config.LeftArrowIcon;
         this.RightArrowIcon = config.RightArrowIcon;
     }

@@ -45,7 +45,6 @@ const Form: React.FC<FormProps> = ({
 const styles = StyleSheet.create({
     container: {
         alignItems: 'stretch',
-        marginVertical: 12,
     },
     section: {},
 });

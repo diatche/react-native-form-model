@@ -322,6 +322,30 @@ export function useObservableIfNeeded<T>(
 }
 
 /**
+ * Creates a behavior subject, which tracks the
+ * specified `value`.
+ *
+ * @param value
+ * @param options
+ * @returns
+ */
+export function createBehaviorSubject<T>(
+    value: T,
+    options?: { serializer?: (value: T) => any }
+): BehaviorSubject<T> {
+    const subject = React.useRef(new BehaviorSubject(value)).current;
+    React.useEffect(() => {
+        subject.next(value);
+    }, [options?.serializer ? options.serializer(value) : value]);
+    React.useEffect(() => {
+        return () => {
+            subject.complete();
+        };
+    }, []);
+    return subject;
+}
+
+/**
  * Returns the date interval between now
  * and the specifed `duration` ago.
  *

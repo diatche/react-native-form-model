@@ -53,9 +53,12 @@ export interface FormColors {
     sectionTitle?: string;
     sectionFooter?: string;
     divider?: string;
+    formBackground?: string;
 }
 
-export const kDefaultLightFormColors: Required<FormColors> = {
+export type RequiredFormColors = Required<Omit<FormColors, 'formBackground'>>;
+
+export const kDefaultLightFormColors: RequiredFormColors = {
     label: Colors.grey900,
     input: Colors.blue600,
     error: Colors.red700,
@@ -68,7 +71,7 @@ export const kDefaultLightFormColors: Required<FormColors> = {
     divider: Colors.grey200,
 };
 
-export const kDefaultDarkFormColors: Required<FormColors> = {
+export const kDefaultDarkFormColors: RequiredFormColors = {
     label: Colors.grey100,
     input: Colors.blue400,
     error: Colors.red300,
