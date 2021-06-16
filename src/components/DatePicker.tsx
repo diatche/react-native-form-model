@@ -118,6 +118,15 @@ class DatePicker extends Component<DatePickerProps, DatePickerState> {
         };
     }
 
+    componentDidMount() {
+        if (!FormAssets.shared.LeftArrowIcon) {
+            console.warn('Missing FormAssets.shared.LeftArrowIcon');
+        }
+        if (!FormAssets.shared.RightArrowIcon) {
+            console.warn('Missing FormAssets.shared.RightArrowIcon');
+        }
+    }
+
     getSnapshotBeforeUpdate(): Partial<DatePickerProps> {
         return { visible: this.props.visible };
     }

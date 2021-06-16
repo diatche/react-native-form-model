@@ -25,6 +25,13 @@ export default function ClearButton({
     if (rippleColor) {
         rippleColor += '60';
     }
+
+    React.useEffect(() => {
+        if (!FormAssets.shared.ClearIcon) {
+            console.warn('Missing FormAssets.shared.ClearIcon');
+        }
+    }, []);
+
     return (
         <TouchableRipple
             disabled={disabled}
