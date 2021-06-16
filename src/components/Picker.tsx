@@ -1,6 +1,7 @@
 import React from 'react';
 import { Picker as NativePicker } from '@react-native-picker/picker';
 import {
+    LayoutChangeEvent,
     Platform,
     ScrollView,
     StyleProp,
@@ -8,6 +9,7 @@ import {
     TextStyle,
     View,
     ViewProps,
+    ViewStyle,
 } from 'react-native';
 import FormLabel from './FormLabel';
 import { Modal, Portal, useTheme } from 'react-native-paper';
@@ -21,8 +23,21 @@ const isIOS = Platform.OS === 'ios';
 const isAndroid = Platform.OS === 'android';
 const isWeb = Platform.OS === 'web';
 
+/**
+ * If the native OS picker does not present a modal, set to true.
+ */
 const isInlinePicker = isIOS;
-const nativeModeHandler = isAndroid;
+
+/**
+ * If the OS can handle picker modal presentation, set to true.
+ *
+ * Android does handle both dropdowns and dialogs, but bugs
+ * inside @react-native-picker/picker prevent dialogs
+ * from being used.
+ */
+const nativeModalHandler = false;
+
+const kMaxDialogHeight = 500;
 
 export interface PickerProps<T = any> extends ViewProps {
     possibleValues: T[];
@@ -95,6 +110,28 @@ export default function Picker<T = any>({
             : undefined,
     };
 
+    // If we display a dialog, we need to measure the content
+    // to size the modal appropriately as this is done
+    // automatically only on web.
+    const displayDialog =
+        !isInlinePicker && !nativeModalHandler && mode === 'dialog';
+    const [optionsDialogHeight, setOptionsDialogHeight] =
+        React.useState<number>(0);
+    let modalStyle: ViewStyle | undefined;
+    let onDialogLayout: ((event: LayoutChangeEvent) => void) | undefined;
+    if (displayDialog && !isWeb) {
+        modalStyle = optionsDialogHeight
+            ? {
+                  height: Math.min(kMaxDialogHeight, optionsDialogHeight),
+              }
+            : { opacity: 0 };
+        onDialogLayout = ({
+            nativeEvent: {
+                layout: { height },
+            },
+        }) => height !== optionsDialogHeight && setOptionsDialogHeight(height);
+    }
+
     const createPickerItems = () =>
         possibleValues.map((value, i) => (
             <NativePicker.Item
@@ -105,7 +142,7 @@ export default function Picker<T = any>({
             />
         ));
 
-    if (isInlinePicker || (!nativeModeHandler && mode === 'dialog')) {
+    if (isInlinePicker || displayDialog) {
         return (
             <View style={[styles.container, style]}>
                 <FormLabel
@@ -127,6 +164,7 @@ export default function Picker<T = any>({
                                 backgroundColor: theme.colors.surface,
                                 borderRadius: theme.roundness,
                             },
+                            modalStyle,
                         ]}
                         theme={theme}
                     >
@@ -158,6 +196,7 @@ export default function Picker<T = any>({
                                     formatItem={formatValue}
                                     itemColor={itemColor}
                                     chechmarkColor={itemColor}
+                                    onLayout={onDialogLayout}
                                 />
                             </ScrollView>
                         )}
@@ -193,7 +232,9 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     modal: {
+        minWidth: 320,
         maxWidth: 400,
+        maxHeight: kMaxDialogHeight,
         alignSelf: 'center',
         overflow: 'hidden',
     },
