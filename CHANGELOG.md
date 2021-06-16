@@ -6,7 +6,16 @@ Changes on `main` will be listed here.
 
 ### Features
 
--   [[#4](https://github.com/diatche/react-native-form-model/pull/4)] Picker is no longer limited to string and number values.
+-   [[#4](https://github.com/diatche/react-native-form-model/pull/4)] Option input field is no longer limited to string and number values.
+-   [[#5](https://github.com/diatche/react-native-form-model/pull/5)] Added `dialog` mode to option input field, which uses a new `OptionList` component in iOS and web.
+-   [[#5](https://github.com/diatche/react-native-form-model/pull/5)] Added `CheckmarkIcon` to `FormAssets`.
+
+### Breaking Changes
+
+-   [[#5](https://github.com/diatche/react-native-form-model/pull/5)] Renamed option input field property `type` to `mode`.
+-   [[#5](https://github.com/diatche/react-native-form-model/pull/5)] Renamed option input field types `segmentedControl` and `picker` to `segmented` and `dropdown` respectively.
+-   [[#5](https://github.com/diatche/react-native-form-model/pull/5)] Picker now accepts `possibleValues`, `selectedIndex`, `serializer` and `formatValue`, instead of `children`, `selectedTitle` etc.
+-   [[#5](https://github.com/diatche/react-native-form-model/pull/5)] `Form` component no longer has a built in vertical margin.
 
 ## 0.3.0
 
