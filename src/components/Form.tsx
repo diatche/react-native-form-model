@@ -1,6 +1,13 @@
 import _ from 'lodash';
 import React from 'react';
-import { Platform, StyleSheet, View, ViewProps } from 'react-native';
+import {
+    Platform,
+    StyleProp,
+    StyleSheet,
+    View,
+    ViewProps,
+    ViewStyle,
+} from 'react-native';
 import FormModel from '../models';
 import FormSection from './FormSection';
 
@@ -17,7 +24,7 @@ const Form: React.FC<FormProps> = ({
 }: FormProps) => {
     const sectionCount = form.sections.length;
     let sections = form.sections.map((section, i) => {
-        let sectionStyle = styles.section;
+        let sectionStyle: StyleProp<ViewStyle> = styles.section;
         if (i !== 0 && sectionCount !== 0) {
             sectionStyle = [
                 sectionStyle,
@@ -46,7 +53,9 @@ const styles = StyleSheet.create({
     container: {
         alignItems: 'stretch',
     },
-    section: {},
+    section: {
+        flexShrink: 1,
+    },
 });
 
 export default Form;

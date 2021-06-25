@@ -4,6 +4,15 @@
 
 Changes on `main` will be listed here.
 
+### Features
+
+-   [[#6](https://github.com/diatche/react-native-form-model/pull/6)] Added `disabled` property to label fields.
+-   [[#6](https://github.com/diatche/react-native-form-model/pull/6)] Buttons now adjust font size to fit.
+
+### Bug Fixes
+
+-   [[#6](https://github.com/diatche/react-native-form-model/pull/6)] Improved layout when form is displayed with insufficient width.
+
 ## 0.4.0
 
 16 Jun 2021

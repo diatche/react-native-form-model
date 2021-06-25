@@ -104,9 +104,11 @@ const styles = StyleSheet.create({
         paddingHorizontal: 12,
     },
     rowContainer: {
+        flexShrink: 1,
         alignItems: 'stretch',
     },
     rowAndDivider: {
+        flexShrink: 1,
         alignItems: 'stretch',
     },
     divider: {

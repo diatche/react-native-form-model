@@ -124,13 +124,15 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
     },
     line: {
-        flex: 1,
-        maxWidth: '100%',
+        flexGrow: 1,
+        flexShrink: 1,
         alignItems: 'stretch',
         flexDirection: 'row',
         flexWrap: 'wrap',
     },
-    field: {},
+    field: {
+        flexShrink: 1,
+    },
     flex: { flex: 1 },
 });
 
