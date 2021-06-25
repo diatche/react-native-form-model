@@ -4,6 +4,10 @@
 
 Changes on `main` will be listed here.
 
+## 0.4.1
+
+25 Jun 2021
+
 ### Features
 
 -   [[#6](https://github.com/diatche/react-native-form-model/pull/6)] Added `disabled` property to label fields.
