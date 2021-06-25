@@ -153,6 +153,7 @@ export default function Picker<T = any>({
                     style={[styles.label, itemStyle]}
                     textStyle={itemStyle}
                     onPress={() => setVisible(true)}
+                    disabled={disabled}
                 />
                 <Portal theme={theme}>
                     <Modal
