@@ -54,7 +54,7 @@ const FormField: React.FC<FormFieldProps> = ({
     const formStyle = field.resolveStyle(theme.form);
     const justifyContent = kAlignmentToJustifyContentMap[field.align];
     const innerContainerStyle: ViewStyle = {
-        flex: field.flex,
+        flex: field.flex ? field.flex : undefined,
         justifyContent,
     };
     const containerStyle: ViewStyle = {
@@ -120,6 +120,7 @@ const FormField: React.FC<FormFieldProps> = ({
                 key={field.key}
                 title={title}
                 style={styles.label}
+                align={field.align}
                 textStyle={[
                     styles.labelText,
                     labelTextStyle,
@@ -218,6 +219,7 @@ const FormField: React.FC<FormFieldProps> = ({
                 <FormLabel
                     key={`${field.key}_label`}
                     title={dateString}
+                    align={field.align}
                     onPress={() => {
                         if (!editing) {
                             setEditing(true);
@@ -274,6 +276,7 @@ const FormField: React.FC<FormFieldProps> = ({
                     <FormLabel
                         key={`${field.key}_label`}
                         title={field.formatTime(time)}
+                        align={field.align}
                         onPress={() => {
                             if (!editing) {
                                 setEditing(true);
@@ -429,6 +432,7 @@ const FormField: React.FC<FormFieldProps> = ({
             <FormLabel
                 key={field.key}
                 title={field.formatValue(value) || field.placeholder}
+                align={field.align}
                 style={styles.label}
                 textStyle={[styles.labelText, inputTextStyle]}
             />
@@ -479,7 +483,9 @@ const FormField: React.FC<FormFieldProps> = ({
 
 const styles = StyleSheet.create({
     container: {},
-    invisibleContainer: { flex: 1 },
+    invisibleContainer: {
+        flex: 1,
+    },
     label: {
         flex: 1,
     },

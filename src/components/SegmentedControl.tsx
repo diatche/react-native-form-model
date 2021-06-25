@@ -118,6 +118,9 @@ const SegmentedControl = React.memo(
                 >
                     <Text
                         selectable={false}
+                        adjustsFontSizeToFit={true}
+                        minimumFontScale={0.6}
+                        numberOfLines={1}
                         style={[
                             styles.itemText,
                             isSelected ? selectedTextStyle : textStyle,
@@ -147,8 +150,10 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
         alignItems: 'center',
+        flexWrap: 'wrap',
     },
     item: {
+        flexShrink: 1,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
@@ -159,6 +164,7 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
     },
     itemText: {
+        flexShrink: 1,
         textAlign: 'center',
     },
 });

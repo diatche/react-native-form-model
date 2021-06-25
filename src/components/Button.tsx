@@ -78,6 +78,8 @@ const Button: React.FC<ButtonProps> = ({
         selectable: false,
         color: stateColor,
         style: [styles.buttonText, { color: stateColor }, textStyle],
+        adjustsFontSizeToFit: true,
+        minimumFontScale: 0.6,
     };
     const titleView =
         typeof title === 'string' ? (
@@ -174,6 +176,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     buttonText: {
+        flexShrink: 1,
         fontSize: 16,
         lineHeight: 24,
         paddingHorizontal: 4,

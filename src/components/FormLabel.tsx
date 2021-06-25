@@ -7,13 +7,16 @@ import {
     ViewProps,
 } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
+import { FieldAlignment } from '../models/FieldModel';
 import { PaperThemeWithForm } from '../models/FormStyle';
+import { kAlignmentToJustifyContentMap } from './styleUtil';
 
 export interface FormLabelProps extends ViewProps {
     title: string | undefined;
     onPress?: TextProps['onPress'];
     textStyle?: TextProps['style'];
     selectable?: boolean;
+    align?: FieldAlignment;
 }
 
 export default React.memo(function FormLabel({
@@ -22,9 +25,11 @@ export default React.memo(function FormLabel({
     style,
     textStyle,
     selectable,
+    align = 'left',
     ...props
 }: FormLabelProps) {
     const theme = useTheme() as PaperThemeWithForm;
+    const justifyContent = kAlignmentToJustifyContentMap[align];
     if (typeof title === 'undefined') {
         title = '';
     } else if (typeof title === 'string') {
@@ -35,6 +40,8 @@ export default React.memo(function FormLabel({
             selectable={selectable}
             style={[styles.text, textStyle]}
             theme={theme}
+            adjustsFontSizeToFit={true}
+            minimumFontScale={0.6}
         >
             {title}
         </Text>
@@ -43,7 +50,7 @@ export default React.memo(function FormLabel({
         <TouchableOpacity
             {...props}
             onPress={onPress}
-            style={[styles.container, style]}
+            style={[styles.container, { justifyContent }, style]}
         >
             {label}
         </TouchableOpacity>
@@ -56,10 +63,8 @@ export default React.memo(function FormLabel({
 
 const styles = StyleSheet.create({
     container: {
+        flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'center',
     },
-    text: {
-        width: '100%',
-    },
+    text: {},
 });
