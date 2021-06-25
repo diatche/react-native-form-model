@@ -227,6 +227,7 @@ const FormField: React.FC<FormFieldProps> = ({
                     }}
                     style={styles.field}
                     textStyle={inputTextStyle}
+                    disabled={field.disabled}
                 />
             );
         }
@@ -284,6 +285,7 @@ const FormField: React.FC<FormFieldProps> = ({
                         }}
                         style={styles.field}
                         textStyle={inputTextStyle}
+                        disabled={field.disabled}
                     />
                 );
             }
@@ -435,6 +437,7 @@ const FormField: React.FC<FormFieldProps> = ({
                 align={field.align}
                 style={styles.label}
                 textStyle={[styles.labelText, inputTextStyle]}
+                disabled={field.disabled}
             />
         );
     } else if (field instanceof CustomFieldModel) {

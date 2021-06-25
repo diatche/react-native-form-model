@@ -14,6 +14,7 @@ import { kAlignmentToJustifyContentMap } from './styleUtil';
 export interface FormLabelProps extends ViewProps {
     title: string | undefined;
     onPress?: TextProps['onPress'];
+    disabled?: boolean;
     textStyle?: TextProps['style'];
     selectable?: boolean;
     align?: FieldAlignment;
@@ -30,6 +31,7 @@ export default React.memo(function FormLabel({
 }: FormLabelProps) {
     const theme = useTheme() as PaperThemeWithForm;
     const justifyContent = kAlignmentToJustifyContentMap[align];
+    const containerStyle = [styles.container, { justifyContent }, style];
     if (typeof title === 'undefined') {
         title = '';
     } else if (typeof title === 'string') {
@@ -47,15 +49,11 @@ export default React.memo(function FormLabel({
         </Text>
     );
     return onPress ? (
-        <TouchableOpacity
-            {...props}
-            onPress={onPress}
-            style={[styles.container, { justifyContent }, style]}
-        >
+        <TouchableOpacity {...props} onPress={onPress} style={containerStyle}>
             {label}
         </TouchableOpacity>
     ) : (
-        <View {...props} style={[styles.container, style]}>
+        <View {...props} style={containerStyle}>
             {label}
         </View>
     );
