@@ -4,6 +4,10 @@
 
 Changes on `main` will be listed here.
 
+### Bug Fixes
+
+-   [[#7](https://github.com/diatche/react-native-form-model/pull/7)] Fixed picker label alignment.
+
 ## 0.4.1
 
 25 Jun 2021
