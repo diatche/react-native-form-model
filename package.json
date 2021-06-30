@@ -1,6 +1,6 @@
 {
     "name": "react-native-form-model",
-    "version": "0.4.1",
+    "version": "0.4.2",
     "description": "An easily testable and opinionated React Native form model builder written in pure JavaScript.",
     "author": "Pavel Diatchenko <diatche@gmail.com>",
     "license": "MIT",
