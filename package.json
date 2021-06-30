@@ -5,6 +5,18 @@
     "author": "Pavel Diatchenko <diatche@gmail.com>",
     "license": "MIT",
     "repository": "https://github.com/diatche/react-native-form-model",
+    "keywords": [
+        "react",
+        "react-native",
+        "form",
+        "ui",
+        "validation",
+        "forms",
+        "pretty",
+        "email",
+        "password",
+        "parse"
+    ],
     "main": "dist/index.js",
     "files": [
         "dist",
