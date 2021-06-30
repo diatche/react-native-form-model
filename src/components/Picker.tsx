@@ -43,6 +43,7 @@ export interface PickerProps<T = any> extends ViewProps {
     possibleValues: T[];
     formatValue: (value: T | undefined, index: number) => string;
     disabled?: boolean;
+    align?: 'left' | 'center' | 'right';
     /**
      * Selected index, correspoding to `possibleValues`.
      */
@@ -89,6 +90,7 @@ export default function Picker<T = any>({
     selectedIndex,
     onValueChange,
     disabled,
+    align = 'left',
     mode,
     prompt,
     style,
@@ -150,6 +152,7 @@ export default function Picker<T = any>({
                         possibleValues[selectedIndex],
                         selectedIndex
                     )}
+                    align={align}
                     style={[styles.label, itemStyle]}
                     textStyle={itemStyle}
                     onPress={() => setVisible(true)}

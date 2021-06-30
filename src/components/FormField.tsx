@@ -150,8 +150,9 @@ const FormField: React.FC<FormFieldProps> = ({
                 }
             },
         });
-        const editingStateRef =
-            React.useRef<InputFieldState<any> | undefined>(undefined);
+        const editingStateRef = React.useRef<InputFieldState<any> | undefined>(
+            undefined
+        );
         invisibleContainerField = (
             <TextInputField
                 {...otherProps}
@@ -329,8 +330,9 @@ const FormField: React.FC<FormFieldProps> = ({
         } else {
             const fieldRef = React.useRef<TimeInputField>(null);
             field.viewRef = fieldRef;
-            const editingStateRef =
-                React.useRef<InputFieldState<any> | undefined>(undefined);
+            const editingStateRef = React.useRef<
+                InputFieldState<any> | undefined
+            >(undefined);
             invisibleContainerField = (
                 <TimeInputField
                     {...otherProps}
@@ -409,6 +411,7 @@ const FormField: React.FC<FormFieldProps> = ({
                             fieldWithBorderStyle,
                             inputTextStyle,
                         ]}
+                        align={field.align}
                         mode={field.mode}
                         prompt={field.prompt}
                         disabled={field.disabled}
