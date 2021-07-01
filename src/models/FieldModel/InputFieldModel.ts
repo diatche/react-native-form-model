@@ -33,6 +33,10 @@ export interface InputFieldModelOptions<T, I = string>
     validation?: (value?: T) => InputFieldValidationValue;
 }
 
+export interface InputFieldModelDelegate<T, I> {
+    willValidate: (field: InputFieldModel<T, I>) => void;
+}
+
 export type ParsedInputFieldModelOptions<T, I> = Omit<
     InputFieldModelOptions<T, I>,
     'parseInput'
@@ -53,6 +57,7 @@ export default class InputFieldModel<T, I = string>
     formatValue: (value: T | undefined) => string;
     validation?: (value?: T) => InputFieldValidationValue;
     viewRef?: InputFieldViewRef;
+    delegate?: InputFieldModelDelegate<T, I>;
 
     private _onValueChangeCb?: InputFieldModelOptions<T, I>['onValueChange'];
 
@@ -187,6 +192,7 @@ export default class InputFieldModel<T, I = string>
     }
 
     validate(): InputFieldValidationResult {
+        this.delegate?.willValidate(this);
         let { valid = true, error } = this.normalizedValidationResult(
             this.value.value
         );
