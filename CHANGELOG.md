@@ -4,16 +4,13 @@
 
 Changes on `main` will be listed here.
 
-### Bug Fixes
-
--   [[#8](https://github.com/diatche/react-native-form-model/pull/8)] Fixed a bug where a text input's latest pending value would not be commited in some native UI situations.
-
-## 0.4.2
+## 0.4.2 - 0.4.3
 
 1 Jul 2021
 
 ### Bug Fixes
 
+-   [[#8](https://github.com/diatche/react-native-form-model/pull/8)] Fixed a bug where a text input's latest pending value would not be commited in some native UI situations.
 -   [[#7](https://github.com/diatche/react-native-form-model/pull/7)] Fixed picker label alignment.
 
 ## 0.4.1
