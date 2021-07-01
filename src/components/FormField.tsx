@@ -153,6 +153,12 @@ const FormField: React.FC<FormFieldProps> = ({
         const editingStateRef = React.useRef<InputFieldState<any> | undefined>(
             undefined
         );
+        const commitState = () =>
+            editingStateRef.current && field.setState(editingStateRef.current);
+
+        field.delegate = {
+            willValidate: commitState,
+        };
         invisibleContainerField = (
             <TextInputField
                 {...otherProps}
@@ -178,10 +184,7 @@ const FormField: React.FC<FormFieldProps> = ({
                         field.setState(state);
                     }
                 }}
-                onBlur={() =>
-                    editingStateRef.current &&
-                    field.setState(editingStateRef.current)
-                }
+                onBlur={commitState}
                 parse={x => field.parseState(x)}
                 format={x => field.formatValue(x)}
                 validate={x => field.normalizedValidationResult(x)}
@@ -333,6 +336,15 @@ const FormField: React.FC<FormFieldProps> = ({
             const editingStateRef = React.useRef<
                 InputFieldState<any> | undefined
             >(undefined);
+
+            const commitState = () =>
+                editingStateRef.current &&
+                field.setState(editingStateRef.current);
+
+            field.delegate = {
+                willValidate: commitState,
+            };
+
             invisibleContainerField = (
                 <TimeInputField
                     {...otherProps}
@@ -350,10 +362,7 @@ const FormField: React.FC<FormFieldProps> = ({
                     onValueChange={state => {
                         editingStateRef.current = state;
                     }}
-                    onBlur={() =>
-                        editingStateRef.current &&
-                        field.setState(editingStateRef.current)
-                    }
+                    onBlur={commitState}
                     align={field.align}
                     style={[
                         styles.container,
