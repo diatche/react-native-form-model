@@ -4,6 +4,10 @@
 
 Changes on `main` will be listed here.
 
+### Breaking Changes
+
+-   Removed segmented control wrap by default. This can be added in `style`.
+
 ## 0.4.2 - 0.4.3
 
 1 Jul 2021

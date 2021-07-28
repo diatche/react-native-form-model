@@ -396,6 +396,7 @@ const FormField: React.FC<FormFieldProps> = ({
                         onSelect={i => field.selectIndex(i)}
                         style={[
                             styles.container,
+                            styles.segmentedControl,
                             containerStyle,
                             fieldWithBorderStyle,
                         ]}
@@ -525,6 +526,9 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
+    },
+    segmentedControl: {
+        flexWrap: 'wrap',
     },
 });
 
