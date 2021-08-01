@@ -127,11 +127,12 @@ export default function Picker<T = any>({
                   height: Math.min(kMaxDialogHeight, optionsDialogHeight),
               }
             : { opacity: 0 };
-        onDialogLayout = ({
-            nativeEvent: {
-                layout: { height },
-            },
-        }) => height !== optionsDialogHeight && setOptionsDialogHeight(height);
+        onDialogLayout = event => {
+            const newHeight = event.nativeEvent.layout.height;
+            if (optionsDialogHeight !== newHeight) {
+                setOptionsDialogHeight(newHeight);
+            }
+        };
     }
 
     const createPickerItems = () =>
