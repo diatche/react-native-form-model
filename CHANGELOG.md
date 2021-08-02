@@ -4,9 +4,13 @@
 
 Changes on `main` will be listed here.
 
+## 0.4.4
+
+3 Aug 2021
+
 ### Breaking Changes
 
--   Removed segmented control wrap by default. This can be added in `style`.
+-   Segmented control no longer uses flex wrap by default. This can be added in `style`.
 
 ## 0.4.2 - 0.4.3
 
