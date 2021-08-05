@@ -196,6 +196,7 @@ const FormField: React.FC<FormFieldProps> = ({
                 clearTextOnFocus={field.clearTextOnFocus}
                 clearButtonMode={field.clearButtonMode}
                 align={field.align}
+                mode={field.mode}
                 style={[
                     styles.container,
                     containerStyle,
@@ -363,6 +364,7 @@ const FormField: React.FC<FormFieldProps> = ({
                     }}
                     onBlur={commitState}
                     align={field.align}
+                    mode={field.mode}
                     style={[
                         styles.container,
                         containerStyle,

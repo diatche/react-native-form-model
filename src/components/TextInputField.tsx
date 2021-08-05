@@ -82,7 +82,7 @@ export default class TextInputField<T = string> extends ControlField<
             textStyle = {},
             formStyle,
             multiline = false,
-            mode = 'contained',
+            mode = 'plain',
         } = this.props;
         const { userInput = '', error } = this.state;
 
