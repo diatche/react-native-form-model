@@ -53,10 +53,12 @@ const FormField: React.FC<FormFieldProps> = ({
     const theme = useTheme() as PaperThemeWithForm;
     const formStyle = field.resolveStyle(theme.form);
     const justifyContent = kAlignmentToJustifyContentMap[field.align];
-    const innerContainerStyle: ViewStyle = {
-        flex: field.flex ? field.flex : undefined,
+    let innerContainerStyle: ViewStyle = {
         justifyContent,
     };
+    if (field.flex) {
+        innerContainerStyle.flex = field.flex;
+    }
     const containerStyle: ViewStyle = {
         ...innerContainerStyle,
         marginLeft: formStyle.marginLeft,
@@ -69,9 +71,7 @@ const FormField: React.FC<FormFieldProps> = ({
         paddingBottom: formStyle.paddingBottom,
     };
     const fieldWithBorderStyle: ViewStyle = {
-        ...getFieldWithBorderStyle(theme),
         borderRadius: Math.max(0, formStyle.roundness - 3),
-        borderWidth: 0,
         marginLeft: 3,
         marginRight: 3,
         marginTop: 3,
@@ -198,6 +198,7 @@ const FormField: React.FC<FormFieldProps> = ({
                 clearTextOnFocus={field.clearTextOnFocus}
                 clearButtonMode={field.clearButtonMode}
                 align={field.align}
+                mode={field.mode}
                 style={[
                     styles.container,
                     containerStyle,
@@ -205,6 +206,7 @@ const FormField: React.FC<FormFieldProps> = ({
                     styleProp,
                 ]}
                 textStyle={inputTextStyle}
+                formStyle={formStyle}
                 theme={theme}
             />
         );
@@ -364,6 +366,7 @@ const FormField: React.FC<FormFieldProps> = ({
                     }}
                     onBlur={commitState}
                     align={field.align}
+                    mode={field.mode}
                     style={[
                         styles.container,
                         containerStyle,
@@ -371,6 +374,7 @@ const FormField: React.FC<FormFieldProps> = ({
                         styleProp,
                     ]}
                     textStyle={inputTextStyle}
+                    formStyle={formStyle}
                     theme={theme}
                 />
             );
@@ -419,6 +423,7 @@ const FormField: React.FC<FormFieldProps> = ({
                             styles.container,
                             containerStyle,
                             fieldWithBorderStyle,
+                            getPickerStyle(theme),
                             inputTextStyle,
                         ]}
                         align={field.align}
@@ -532,7 +537,7 @@ const styles = StyleSheet.create({
     },
 });
 
-const getFieldWithBorderStyle = (theme: PaperThemeWithForm) => {
+const getPickerStyle = (theme: PaperThemeWithForm) => {
     // We selectively apply backround, because web needs it,
     // and Android has a bug with background color when using
     // it with Picker.

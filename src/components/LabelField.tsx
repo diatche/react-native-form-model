@@ -2,7 +2,7 @@ import React from 'react';
 import { View, ViewStyle, StyleProp, TextStyle, FlexStyle } from 'react-native';
 import { Text, Caption, TouchableRipple } from 'react-native-paper';
 import _ from 'lodash';
-import { PaperThemeWithForm } from '../models/FormStyle';
+import { FormStyle, PaperThemeWithForm } from '../models/FormStyle';
 
 export type Alignment = 'left' | 'center' | 'right';
 
@@ -24,6 +24,7 @@ export interface LabelFieldProps<T> extends Omit<ViewStyle, 'value'> {
     align?: Alignment;
     style?: StyleProp<TextStyle>;
     textStyle?: StyleProp<TextStyle>;
+    formStyle?: FormStyle;
     rippleColor?: string;
     disabled?: boolean;
     /**

@@ -19,6 +19,7 @@ export default class TimeInputFieldModel
     extends InputFieldModel<Duration, Duration>
     implements TimeInputFieldModelOptions
 {
+    mode: TimeInputFieldModelOptions['mode'] | undefined;
     refDay: MaybeObservable<Moment | undefined> | undefined;
     futureDisabled: boolean;
     autoFocus: boolean;
@@ -55,6 +56,7 @@ export default class TimeInputFieldModel
             validation,
         });
         let {
+            mode = 'plain',
             autoFocus = false,
             futureDisabled = false,
             optional = false,
@@ -62,6 +64,7 @@ export default class TimeInputFieldModel
             selectTextOnFocus = false,
             clearButtonMode = 'never',
         } = options;
+        this.mode = mode;
         this.refDay = options.refDay;
         this.futureDisabled = futureDisabled;
         this.autoFocus = autoFocus;

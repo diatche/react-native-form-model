@@ -28,6 +28,8 @@ export interface FormStyle {
     sectionTitleAlign?: TextStyle['textAlign'];
     sectionFooterAlign?: TextStyle['textAlign'];
 
+    containedTextBorderWidth?: number;
+
     colors: FormColors;
 
     paddingLeft?: number;
@@ -54,6 +56,8 @@ export interface FormColors {
     sectionFooter?: string;
     divider?: string;
     formBackground?: string;
+    containedTextBorder?: string;
+    containedTextBackground?: string;
 }
 
 export type RequiredFormColors = Required<Omit<FormColors, 'formBackground'>>;
@@ -69,6 +73,8 @@ export const kDefaultLightFormColors: RequiredFormColors = {
     sectionTitle: Colors.grey700,
     sectionFooter: Colors.grey700,
     divider: Colors.grey200,
+    containedTextBorder: Colors.grey300,
+    containedTextBackground: Colors.grey200,
 };
 
 export const kDefaultDarkFormColors: RequiredFormColors = {
@@ -82,6 +88,8 @@ export const kDefaultDarkFormColors: RequiredFormColors = {
     sectionTitle: Colors.grey300,
     sectionFooter: Colors.grey300,
     divider: Colors.grey800,
+    containedTextBorder: Colors.grey700,
+    containedTextBackground: Colors.grey800,
 };
 
 export const kDefaultFormStyle: Required<FormStyle> = {
@@ -95,6 +103,8 @@ export const kDefaultFormStyle: Required<FormStyle> = {
     inputFontWeight: 'normal',
     sectionTitleAlign: 'auto',
     sectionFooterAlign: 'auto',
+
+    containedTextBorderWidth: 1,
 
     colors: kDefaultLightFormColors,
 

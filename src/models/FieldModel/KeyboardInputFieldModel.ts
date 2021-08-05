@@ -13,6 +13,7 @@ export interface KeyboardInputFieldModelBaseOptions
     > {
     optional?: boolean;
     autoFocus?: boolean;
+    mode?: 'plain' | 'contained';
 }
 
 export interface KeyboardInputFieldModelOwnOptions
@@ -52,6 +53,7 @@ export default class KeyboardInputFieldModel<T>
     implements KeyboardInputFieldModelOwnOptions
 {
     type: KeyboardInputFieldType;
+    mode: KeyboardInputFieldModelOwnOptions['mode'] | undefined;
     keyboardType: KeyboardTypeOptions;
     textContentType: TextInputProps['textContentType'] | undefined;
     optional: boolean;
@@ -70,6 +72,7 @@ export default class KeyboardInputFieldModel<T>
         };
         super(optionsWithDefaults);
         this.type = optionsWithDefaults.type;
+        this.mode = optionsWithDefaults.mode;
         this.validation = optionsWithDefaults.validation;
         this.keyboardType = optionsWithDefaults.keyboardType;
         this.textContentType = optionsWithDefaults.textContentType;
@@ -109,9 +112,10 @@ export type KeyboardInputFieldModelDefaults<T> = Omit<
 let _defaults = (
     options: KeyboardInputFieldModelOptions<any>
 ): KeyboardInputFieldModelDefaults<any> => {
-    const { type = 'text', optional = false } = options;
+    const { type = 'text', mode = 'plain', optional = false } = options;
     const sharedDefaults = {
         type,
+        mode,
         optional,
     };
     switch (type) {
