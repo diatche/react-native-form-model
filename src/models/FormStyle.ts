@@ -54,6 +54,7 @@ export interface FormColors {
     sectionFooter?: string;
     divider?: string;
     formBackground?: string;
+    containedTextBackground?: string;
 }
 
 export type RequiredFormColors = Required<Omit<FormColors, 'formBackground'>>;
@@ -69,6 +70,7 @@ export const kDefaultLightFormColors: RequiredFormColors = {
     sectionTitle: Colors.grey700,
     sectionFooter: Colors.grey700,
     divider: Colors.grey200,
+    containedTextBackground: Colors.grey200,
 };
 
 export const kDefaultDarkFormColors: RequiredFormColors = {
@@ -82,6 +84,7 @@ export const kDefaultDarkFormColors: RequiredFormColors = {
     sectionTitle: Colors.grey300,
     sectionFooter: Colors.grey300,
     divider: Colors.grey800,
+    containedTextBackground: Colors.grey800,
 };
 
 export const kDefaultFormStyle: Required<FormStyle> = {

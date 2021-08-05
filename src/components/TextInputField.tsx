@@ -6,8 +6,10 @@ import ControlField, {
 } from './ControlField';
 import {
     Platform,
+    StyleSheet,
     TextInput as NativeTextInput,
     TextInputProps,
+    ViewStyle,
 } from 'react-native';
 
 const isWeb = Platform.OS === 'web';
@@ -45,6 +47,7 @@ export interface TextInputFieldProps<T>
     extends ControlFieldProps<T, string>,
         TextInputForwardProps {
     secure?: boolean;
+    mode?: 'plain' | 'contained';
 }
 export interface TextInputFieldState<T> extends ControlFieldState<T, string> {}
 
@@ -77,10 +80,24 @@ export default class TextInputField<T = string> extends ControlField<
             style = {},
             textStyle = {},
             multiline = false,
+            mode = 'contained',
         } = this.props;
         const { userInput = '', error } = this.state;
 
         const { textAlignVertical = multiline ? 'top' : 'auto' } = this.props;
+
+        let modeStyle: ViewStyle = {};
+        switch (mode) {
+            case 'plain':
+                break;
+            case 'contained':
+                modeStyle = {
+                    backgroundColor: theme.form.colors.containedTextBackground,
+                };
+                break;
+            default:
+                console.warn('Unrecognized TextInputField mode:', mode);
+        }
 
         const forwardProps = _.omit(this.props, kOmitTextInputProps);
 
@@ -97,7 +114,12 @@ export default class TextInputField<T = string> extends ControlField<
             },
             clearTextOnFocus,
             secureTextEntry: secure,
-            style: [isWeb ? kTextFieldWebStyle : undefined, style, textStyle],
+            style: [
+                isWeb ? kTextFieldWebStyle : undefined,
+                modeStyle,
+                style,
+                textStyle,
+            ],
             selectionColor: theme.colors.primary,
             textAlignVertical,
         };
@@ -116,6 +138,8 @@ export default class TextInputField<T = string> extends ControlField<
         );
     }
 }
+
+const styles = StyleSheet.create({});
 
 const kTextFieldWebStyle: any = {
     /** Remove browser specific styling. */

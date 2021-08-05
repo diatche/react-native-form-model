@@ -191,10 +191,7 @@ class DatePicker extends Component<DatePickerProps, DatePickerState> {
                 this.onCancel();
                 break;
             default:
-                console.warn(
-                    'Received unknown DatePicker event: ' +
-                        JSON.stringify(event, null, 4)
-                );
+                console.warn('Received unknown DatePicker event:', event);
         }
     }
 

@@ -69,7 +69,6 @@ const FormField: React.FC<FormFieldProps> = ({
         paddingBottom: formStyle.paddingBottom,
     };
     const fieldWithBorderStyle: ViewStyle = {
-        ...getFieldWithBorderStyle(theme),
         borderRadius: Math.max(0, formStyle.roundness - 3),
         borderWidth: 0,
         marginLeft: 3,
@@ -419,6 +418,7 @@ const FormField: React.FC<FormFieldProps> = ({
                             styles.container,
                             containerStyle,
                             fieldWithBorderStyle,
+                            getPickerStyle(theme),
                             inputTextStyle,
                         ]}
                         align={field.align}
@@ -532,7 +532,7 @@ const styles = StyleSheet.create({
     },
 });
 
-const getFieldWithBorderStyle = (theme: PaperThemeWithForm) => {
+const getPickerStyle = (theme: PaperThemeWithForm) => {
     // We selectively apply backround, because web needs it,
     // and Android has a bug with background color when using
     // it with Picker.
