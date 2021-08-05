@@ -11,6 +11,7 @@ import {
     TextInputProps,
     ViewStyle,
 } from 'react-native';
+import { FormStyle } from '../models/FormStyle';
 
 const isWeb = Platform.OS === 'web';
 
@@ -79,6 +80,7 @@ export default class TextInputField<T = string> extends ControlField<
             clearTextOnFocus = false,
             style = {},
             textStyle = {},
+            formStyle,
             multiline = false,
             mode = 'contained',
         } = this.props;
@@ -91,9 +93,7 @@ export default class TextInputField<T = string> extends ControlField<
             case 'plain':
                 break;
             case 'contained':
-                modeStyle = {
-                    backgroundColor: theme.form.colors.containedTextBackground,
-                };
+                modeStyle = getContainedTextFieldStyle(formStyle);
                 break;
             default:
                 console.warn('Unrecognized TextInputField mode:', mode);
@@ -138,6 +138,14 @@ export default class TextInputField<T = string> extends ControlField<
         );
     }
 }
+
+const getContainedTextFieldStyle = (style?: FormStyle) => {
+    return {
+        backgroundColor: style?.colors.containedTextBackground,
+        borderWidth: style?.containedTextBorderWidth,
+        borderColor: style?.colors.containedTextBorder,
+    };
+};
 
 const styles = StyleSheet.create({});
 

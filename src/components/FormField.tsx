@@ -70,7 +70,6 @@ const FormField: React.FC<FormFieldProps> = ({
     };
     const fieldWithBorderStyle: ViewStyle = {
         borderRadius: Math.max(0, formStyle.roundness - 3),
-        borderWidth: 0,
         marginLeft: 3,
         marginRight: 3,
         marginTop: 3,
@@ -204,6 +203,7 @@ const FormField: React.FC<FormFieldProps> = ({
                     styleProp,
                 ]}
                 textStyle={inputTextStyle}
+                formStyle={formStyle}
                 theme={theme}
             />
         );
@@ -370,6 +370,7 @@ const FormField: React.FC<FormFieldProps> = ({
                         styleProp,
                     ]}
                     textStyle={inputTextStyle}
+                    formStyle={formStyle}
                     theme={theme}
                 />
             );
