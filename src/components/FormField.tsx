@@ -53,10 +53,12 @@ const FormField: React.FC<FormFieldProps> = ({
     const theme = useTheme() as PaperThemeWithForm;
     const formStyle = field.resolveStyle(theme.form);
     const justifyContent = kAlignmentToJustifyContentMap[field.align];
-    const innerContainerStyle: ViewStyle = {
-        flex: field.flex ? field.flex : undefined,
+    let innerContainerStyle: ViewStyle = {
         justifyContent,
     };
+    if (field.flex) {
+        innerContainerStyle.flex = field.flex;
+    }
     const containerStyle: ViewStyle = {
         ...innerContainerStyle,
         marginLeft: formStyle.marginLeft,

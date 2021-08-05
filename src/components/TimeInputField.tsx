@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { StyleSheet } from 'react-native';
 import TextInputField, { TextInputFieldProps } from './TextInputField';
 import { parseTimeOfDay } from '@diatche/parse-time';
 import moment, { Duration } from 'moment';
@@ -55,6 +56,7 @@ export default class TimeInputField extends Component<
         return (
             <TextInputField<Duration | undefined>
                 {...this.props}
+                style={[styles.container, this.props.style]}
                 ref={this.textInputRef}
                 parse={args => this.parse(args)}
                 format={args => this.format(args)}
@@ -65,3 +67,9 @@ export default class TimeInputField extends Component<
         );
     }
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
+});
