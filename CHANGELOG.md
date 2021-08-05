@@ -4,6 +4,14 @@
 
 Changes on `main` will be listed here.
 
+### Features
+
+-   Added `mode` property to keyboard input and time inputs. There are two modes, `plain` and `contained`. The default mode is `plain` (matches the previous style).
+
+### Bug Fixes
+
+-   Fixed a bug where a time input field height would be smaller than the row.
+
 ## 0.4.4
 
 3 Aug 2021
