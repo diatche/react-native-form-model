@@ -6,11 +6,11 @@ Changes on `main` will be listed here.
 
 ### Features
 
--   Added `mode` property to keyboard input and time inputs. There are two modes, `plain` and `contained`. The default mode is `plain` (matches the previous style).
+-   [[#9](https://github.com/diatche/react-native-form-model/pull/9)] Added `mode` property to keyboard input and time inputs. There are two modes, `plain` and `contained`. The default mode is `plain` (matches the previous style).
 
 ### Bug Fixes
 
--   Fixed a bug where a time input field height would be smaller than the row.
+-   [[#9](https://github.com/diatche/react-native-form-model/pull/9)] Fixed a bug where a time input field height would be smaller than the row.
 
 ## 0.4.4
 
