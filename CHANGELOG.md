@@ -4,7 +4,7 @@
 
 Changes on `main` will be listed here.
 
-## 0.5.0
+## 0.5.0 - 0.5.1
 
 6 Aug 2021
 
@@ -15,6 +15,7 @@ Changes on `main` will be listed here.
 ### Bug Fixes
 
 -   [[#9](https://github.com/diatche/react-native-form-model/pull/9)] Fixed a bug where a time input field height would be smaller than the row.
+-   Fixed a bug where a text input field height would be smaller than the row.
 
 ## 0.4.4
 
