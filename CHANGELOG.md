@@ -4,6 +4,10 @@
 
 Changes on `main` will be listed here.
 
+## 0.5.0
+
+6 Aug 2021
+
 ### Features
 
 -   [[#9](https://github.com/diatche/react-native-form-model/pull/9)] Added `mode` property to keyboard input and time inputs. There are two modes, `plain` and `contained`. The default mode is `plain` (matches the previous style).
