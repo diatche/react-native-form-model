@@ -201,6 +201,7 @@ const FormField: React.FC<FormFieldProps> = ({
                 mode={field.mode}
                 style={[
                     styles.container,
+                    styles.invisibleContainerContent,
                     containerStyle,
                     fieldWithBorderStyle,
                     styleProp,
@@ -257,6 +258,7 @@ const FormField: React.FC<FormFieldProps> = ({
                         isIntegrated
                             ? [
                                   styles.container,
+                                  styles.invisibleContainerContent,
                                   containerStyle,
                                   fieldWithBorderStyle,
                               ]
@@ -319,6 +321,7 @@ const FormField: React.FC<FormFieldProps> = ({
                             isIntegrated
                                 ? [
                                       styles.container,
+                                      styles.invisibleContainerContent,
                                       containerStyle,
                                       fieldWithBorderStyle,
                                   ]
@@ -369,6 +372,7 @@ const FormField: React.FC<FormFieldProps> = ({
                     mode={field.mode}
                     style={[
                         styles.container,
+                        styles.invisibleContainerContent,
                         containerStyle,
                         fieldWithBorderStyle,
                         styleProp,
@@ -400,6 +404,7 @@ const FormField: React.FC<FormFieldProps> = ({
                         onSelect={i => field.selectIndex(i)}
                         style={[
                             styles.container,
+                            styles.invisibleContainerContent,
                             styles.segmentedControl,
                             containerStyle,
                             fieldWithBorderStyle,
@@ -421,6 +426,7 @@ const FormField: React.FC<FormFieldProps> = ({
                         formatValue={x => field.formatValue(x)}
                         style={[
                             styles.container,
+                            styles.invisibleContainerContent,
                             containerStyle,
                             fieldWithBorderStyle,
                             getPickerStyle(theme),
@@ -505,6 +511,9 @@ const FormField: React.FC<FormFieldProps> = ({
 const styles = StyleSheet.create({
     container: {},
     invisibleContainer: {
+        flex: 1,
+    },
+    invisibleContainerContent: {
         flex: 1,
     },
     label: {
