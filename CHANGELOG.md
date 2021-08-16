@@ -4,6 +4,10 @@
 
 Changes on `main` will be listed here.
 
+### Features
+
+-   Added button field model.
+
 ## 0.5.0 - 0.5.1
 
 6 Aug 2021
