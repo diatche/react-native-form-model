@@ -26,6 +26,9 @@ import ErrorFieldModel, {
     ErrorFieldModelOptions,
 } from './FieldModel/ErrorFieldModel';
 import InputFieldModel from './FieldModel/InputFieldModel';
+import ButtonFieldModel, {
+    ButtonFieldModelOptions,
+} from './FieldModel/ButtonFieldModel';
 
 export type ModifierType = 'margin';
 
@@ -215,6 +218,17 @@ export default class RowModel extends FormElement {
     ) {
         return this.addField(
             new KeyboardInputFieldModel<T>({
+                ...options,
+                ...this._fieldOptionsOverrides(),
+            })
+        );
+    }
+
+    addButton(
+        options: Omit<ButtonFieldModelOptions, AddFieldModelOverrideKeys>
+    ) {
+        return this.addField(
+            new ButtonFieldModel({
                 ...options,
                 ...this._fieldOptionsOverrides(),
             })
