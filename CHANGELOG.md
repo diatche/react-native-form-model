@@ -6,7 +6,7 @@ Changes on `main` will be listed here.
 
 ### Features
 
--   Added button field model.
+-   [[#10](https://github.com/diatche/react-native-form-model/pull/10)] Added button field model.
 
 ## 0.5.0 - 0.5.1
 
