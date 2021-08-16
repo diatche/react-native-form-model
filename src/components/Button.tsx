@@ -5,16 +5,12 @@ import {
     TextProps,
     TextStyle,
     TouchableHighlightProps,
+    TouchableOpacity,
     View,
     ViewProps,
     ViewStyle,
 } from 'react-native';
-import {
-    ActivityIndicator,
-    Text,
-    TouchableRipple,
-    useTheme,
-} from 'react-native-paper';
+import { ActivityIndicator, Text, useTheme } from 'react-native-paper';
 import { PaperThemeWithForm } from '../models/FormStyle';
 
 export interface ChildProps extends ViewProps {
@@ -33,6 +29,7 @@ export interface ButtonProps extends TouchableHighlightProps {
     loading?: boolean;
     contentContainerStyle?: StyleProp<ViewStyle>;
     textStyle?: StyleProp<TextStyle>;
+    numberOfLines?: number;
     color?: string;
     activityIndicatorSize?: number;
 }
@@ -45,6 +42,7 @@ const Button: React.FC<ButtonProps> = ({
     style,
     contentContainerStyle,
     textStyle,
+    numberOfLines,
     disabled,
     loading = false,
     color,
@@ -57,9 +55,12 @@ const Button: React.FC<ButtonProps> = ({
     let containerStyle: ViewStyle = {
         borderRadius: theme.roundness,
     };
-    const selectColor = transparent(stateColor);
     let accessoryStyle: StyleProp<ViewStyle> | undefined = undefined;
-    if (!compact) {
+    if (compact) {
+        if (typeof numberOfLines === 'undefined') {
+            numberOfLines = 1;
+        }
+    } else {
         accessoryStyle = styles.nonCompactAccessory;
     }
 
@@ -80,6 +81,7 @@ const Button: React.FC<ButtonProps> = ({
         style: [styles.buttonText, { color: stateColor }, textStyle],
         adjustsFontSizeToFit: true,
         minimumFontScale: 0.6,
+        numberOfLines,
     };
     const titleView =
         typeof title === 'string' ? (
@@ -100,13 +102,17 @@ const Button: React.FC<ButtonProps> = ({
     let buttonContent: React.ReactNode = null;
     if (compact) {
         buttonContent = (
-            <View style={[styles.compactContainerStyle, contentContainerStyle]}>
-                {loading ? activity() : titleView}
+            <View style={[styles.compactInnerContainer, contentContainerStyle]}>
+                {loading
+                    ? activity()
+                    : icon
+                    ? icon({ color: stateColor })
+                    : titleView}
             </View>
         );
     } else {
         buttonContent = (
-            <View style={[styles.containerStyle, contentContainerStyle]}>
+            <View style={[styles.innerContainer, contentContainerStyle]}>
                 <View style={[styles.accessory, accessoryStyle]} />
                 <Flex />
                 {icon ? icon({ color: stateColor }) : null}
@@ -118,35 +124,29 @@ const Button: React.FC<ButtonProps> = ({
     }
 
     return (
-        <View
+        <TouchableOpacity
+            {...otherProps}
             style={[
                 compact ? styles.compactContainer : styles.container,
                 containerStyle,
                 style,
             ]}
+            disabled={!!disabled}
         >
-            <TouchableRipple
-                {...otherProps}
-                style={styles.touchable}
-                rippleColor={selectColor}
-                underlayColor={selectColor}
-                disabled={!!disabled}
-            >
-                {buttonContent}
-            </TouchableRipple>
-        </View>
+            {buttonContent}
+        </TouchableOpacity>
     );
 };
-
-const transparent = (color: string) => color + '60';
 
 const Flex = () => <View style={styles.flex} />;
 
 const styles = StyleSheet.create({
     container: {
+        paddingHorizontal: 8,
         overflow: 'hidden',
     },
     compactContainer: {
+        paddingHorizontal: 8,
         marginVertical: 4,
         overflow: 'hidden',
     },
@@ -158,22 +158,17 @@ const styles = StyleSheet.create({
     nonCompactAccessory: {
         width: 40,
     },
-    touchable: {
-        paddingHorizontal: 8,
-    },
-    compactContainerStyle: {
+    compactInnerContainer: {
         flexShrink: 1,
+        flexGrow: 1,
         flexBasis: 40,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-around',
+        justifyContent: 'center',
     },
-    containerStyle: {
+    innerContainer: {
         flex: 1,
         minHeight: 40,
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between',
     },
     buttonText: {
         flexShrink: 1,

@@ -38,6 +38,8 @@ import DatePicker from './DatePicker';
 import Picker from './Picker';
 import { BehaviorSubject } from 'rxjs';
 import _ from 'lodash';
+import ButtonFieldModel from '../models/FieldModel/ButtonFieldModel';
+import Button from './Button';
 
 // TODO: Optimise updates with React.memo().
 
@@ -209,6 +211,28 @@ const FormField: React.FC<FormFieldProps> = ({
                 textStyle={inputTextStyle}
                 formStyle={formStyle}
                 theme={theme}
+            />
+        );
+    } else if (field instanceof ButtonFieldModel) {
+        const { value: title = '' } = useObservableIfNeeded(field.title);
+        const { value: loading } = useObservableIfNeeded(field.loading);
+        invisibleContainerField = (
+            <Button
+                key={field.key}
+                title={title}
+                onPress={() => field.onPress()}
+                mode={field.mode}
+                compact={field.compact}
+                loading={loading}
+                color={formStyle.colors.buttonBackground}
+                textStyle={{ color: formStyle.colors.buttonForeground }}
+                style={[
+                    styles.container,
+                    styles.invisibleContainerContent,
+                    containerStyle,
+                    fieldWithBorderStyle,
+                    styleProp,
+                ]}
             />
         );
     } else if (field instanceof DateInputFieldModel) {
@@ -523,6 +547,9 @@ const styles = StyleSheet.create({
         fontSize: 14,
     },
     field: {
+        flex: 1,
+    },
+    button: {
         flex: 1,
     },
     customField: {
