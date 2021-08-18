@@ -4,6 +4,10 @@
 
 Changes on `main` will be listed here.
 
+## 0.6.1
+
+18 Aug 2021
+
 ### Bug Fixes
 
 -   Fixed centered label field alignment.
