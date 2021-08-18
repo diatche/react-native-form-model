@@ -5,6 +5,6 @@ export const kAlignmentToJustifyContentMap: {
     [K in FieldAlignment]: FlexStyle['justifyContent'];
 } = {
     left: 'flex-start',
-    center: 'space-between',
+    center: 'center',
     right: 'flex-end',
 };
