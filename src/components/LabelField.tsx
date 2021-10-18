@@ -1,7 +1,8 @@
-import React from 'react';
-import { View, ViewStyle, StyleProp, TextStyle, FlexStyle } from 'react-native';
-import { Text, Caption, TouchableRipple } from 'react-native-paper';
 import _ from 'lodash';
+import React from 'react';
+import { FlexStyle, StyleProp, TextStyle, View, ViewStyle } from 'react-native';
+import { Caption, Text, TouchableRipple } from 'react-native-paper';
+
 import { FormStyle, PaperThemeWithForm } from '../models/FormStyle';
 
 export type Alignment = 'left' | 'center' | 'right';
@@ -59,6 +60,7 @@ export default class LabelField<
 
     componentDidUpdate(prevProps: P, prevState: S, snapshot: any) {
         if (!_.isEqual(this.props.value, prevProps.value)) {
+            // eslint-disable-next-line react/no-did-update-set-state
             this.setState({
                 value: this.props.value,
             });
@@ -73,8 +75,10 @@ export default class LabelField<
         if (this.props.format) {
             try {
                 return this.props.format(value);
-            } catch (err) {
-                console.error('Error during formatting: ' + err.message);
+            } catch (err: any) {
+                console.error(
+                    'Error during formatting: ' + (err?.message || err)
+                );
                 return '';
             }
         } else if (typeof value === 'undefined' || value === null) {
@@ -89,8 +93,8 @@ export default class LabelField<
     }
 
     renderField(content: JSX.Element | JSX.Element[]) {
-        let { theme } = this.props;
-        let {
+        const { theme } = this.props;
+        const {
             onPress,
             disabled,
             style = {},
@@ -98,7 +102,7 @@ export default class LabelField<
             rippleColor = theme.colors.primary + '60',
         } = this.props;
 
-        let styles: StyleProp<ViewStyle> = [
+        const styles: StyleProp<ViewStyle> = [
             {
                 flexDirection: 'row',
                 alignItems: 'center',
@@ -130,9 +134,9 @@ export default class LabelField<
     }
 
     renderTitleAndValue() {
-        let { label = '', placeholder = '', theme, textStyle } = this.props;
-        let { value } = this.state;
-        let valueStr = this.format(value);
+        const { label = '', placeholder = '', theme, textStyle } = this.props;
+        const { value } = this.state;
+        const valueStr = this.format(value);
 
         return (
             <View style={{ flex: 1 }}>

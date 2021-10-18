@@ -1,7 +1,8 @@
 import _ from 'lodash';
-import { lz } from '../../util/locale';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+
+import { lz } from '../../util/locale';
 import { EditableFieldModel } from '../FormElement';
 import FormError, { FormParseError, FormValidationError } from '../FormError';
 import {
@@ -63,7 +64,7 @@ export default class InputFieldModel<T, I = string>
 
     constructor(options: InputFieldModelOptions<T, I>) {
         super(options);
-        let {
+        const {
             defaultValue = options.value.value,
             placeholder = '',
             disabled = false,
@@ -84,8 +85,8 @@ export default class InputFieldModel<T, I = string>
     }
 
     getState(): InputFieldState<T> {
-        let value = this.value.value;
-        let { error } = this.normalizedValidationResult(value);
+        const value = this.value.value;
+        const { error } = this.normalizedValidationResult(value);
         return error ? { error } : { value };
     }
 
@@ -95,15 +96,16 @@ export default class InputFieldModel<T, I = string>
         try {
             // TODO: Debounce input parsing. See [task](https://trello.com/c/CP9flI1D)
             value = this.parseInput(input);
-        } catch (err) {
+        } catch (err: any) {
+            let parsedError: FormParseError = err;
             if (!(err instanceof FormParseError)) {
-                err = new FormParseError(err.message || String(err));
+                parsedError = new FormParseError(err?.message || String(err));
             }
-            error = err;
+            error = parsedError;
         }
 
         if (!error) {
-            let { valid = true, error: validationError } =
+            const { valid = true, error: validationError } =
                 this.normalizedValidationResult(value);
             if (!valid) {
                 error =
@@ -115,15 +117,15 @@ export default class InputFieldModel<T, I = string>
     }
 
     setInput(input: I): InputFieldState<T> {
-        let state = this.parseState(input);
+        const state = this.parseState(input);
         this.setState(state);
         return state;
     }
 
     resetInput(): InputFieldState<T> {
-        let value = this.defaultValue;
-        let { error } = this.normalizedValidationResult(value);
-        let state = error ? { error } : { value };
+        const value = this.defaultValue;
+        const { error } = this.normalizedValidationResult(value);
+        const state = error ? { error } : { value };
         this.setState(state);
         this.edited.next(false);
         return state;
@@ -145,13 +147,14 @@ export default class InputFieldModel<T, I = string>
         let error: Error | undefined;
         try {
             validation = this.validation?.(value);
-        } catch (err) {
+        } catch (err: any) {
+            let parsedError: Error = err;
             if (!(err instanceof Error)) {
-                err = new Error(
+                parsedError = new Error(
                     String(err?.message || err || 'Unknown validation error')
                 );
             }
-            error = err;
+            error = parsedError;
         }
         if (error) {
             valid = false;
@@ -193,7 +196,7 @@ export default class InputFieldModel<T, I = string>
 
     validate(): InputFieldValidationResult {
         this.delegate?.willValidate(this);
-        let { valid = true, error } = this.normalizedValidationResult(
+        const { valid = true, error } = this.normalizedValidationResult(
             this.value.value
         );
         this.setState({
@@ -222,7 +225,7 @@ export default class InputFieldModel<T, I = string>
             this.errors.next([]);
         }
 
-        let didChangeValue = !_.isEqual(value, this.value.value);
+        const didChangeValue = !_.isEqual(value, this.value.value);
         if (didChangeValue) {
             this.value.next(value!);
         }

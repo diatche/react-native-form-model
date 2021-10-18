@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
-import TextInputField, { TextInputFieldProps } from './TextInputField';
 import _ from 'lodash';
+import React, { Component } from 'react';
 import { withTheme } from 'react-native-paper';
+
 import { lz } from '../util/locale';
+import TextInputField, { TextInputFieldProps } from './TextInputField';
 
 type NumberType = number | undefined;
 
@@ -33,7 +34,7 @@ class FloatInputField extends Component<
                 error: new Error(),
             };
         }
-        let value = Number.parseFloat(userInput);
+        const value = Number.parseFloat(userInput);
         return {
             value,
             error:

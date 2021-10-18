@@ -1,8 +1,9 @@
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
 import InputFieldModel, {
     ParsedInputFieldModelOptions,
 } from './InputFieldModel';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 export type OptionInputFieldMode = 'segmented' | 'dropdown' | 'dialog';
 export type OptionInputClearButtonMode = 'auto' | 'always' | 'never';
@@ -41,12 +42,12 @@ export default class OptionInputFieldModel<T = string>
     clearButtonMode: OptionInputClearButtonMode;
 
     constructor(options: OptionInputFieldModelOptions<T>) {
-        let { parseInput = i => this.possibleValues[i] } = options;
+        const { parseInput = i => this.possibleValues[i] } = options;
         super({
             ...options,
             parseInput,
         });
-        let { optional = false, clearButtonMode = 'auto' } = options;
+        const { optional = false, clearButtonMode = 'auto' } = options;
         this.mode = options.mode;
         this.possibleValues = [...options.possibleValues];
         this.serializer = options.serializer;

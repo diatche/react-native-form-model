@@ -1,17 +1,18 @@
-import React from 'react';
 import _ from 'lodash';
+import React from 'react';
+import {
+    TextInput as NativeTextInput,
+    Platform,
+    StyleSheet,
+    TextInputProps,
+    ViewStyle,
+} from 'react-native';
+
+import { FormStyle } from '../models/FormStyle';
 import ControlField, {
     ControlFieldProps,
     ControlFieldState,
 } from './ControlField';
-import {
-    Platform,
-    StyleSheet,
-    TextInput as NativeTextInput,
-    TextInputProps,
-    ViewStyle,
-} from 'react-native';
-import { FormStyle } from '../models/FormStyle';
 
 const isWeb = Platform.OS === 'web';
 
@@ -84,7 +85,7 @@ export default class TextInputField<T = string> extends ControlField<
             multiline = false,
             mode = 'plain',
         } = this.props;
-        const { userInput = '', error } = this.state;
+        const { userInput = '' } = this.state;
 
         const { textAlignVertical = multiline ? 'top' : 'auto' } = this.props;
 
@@ -101,7 +102,7 @@ export default class TextInputField<T = string> extends ControlField<
 
         const forwardProps = _.omit(this.props, kOmitTextInputProps);
 
-        let commonProps: TextInputProps = {
+        const commonProps: TextInputProps = {
             onChangeText: userInput => this.handleUserInput({ userInput }),
             onSubmitEditing: event => this.handleBlur(event),
             onEndEditing: event => this.handleBlur(event),
@@ -124,7 +125,7 @@ export default class TextInputField<T = string> extends ControlField<
             textAlignVertical,
         };
 
-        let combinedProps = { ...forwardProps, ...commonProps };
+        const combinedProps = { ...forwardProps, ...commonProps };
         if (combinedProps.disabled) {
             combinedProps.editable = false;
         }
@@ -146,8 +147,6 @@ const getContainedTextFieldStyle = (style?: FormStyle) => {
         borderColor: style?.colors.containedTextBorder,
     };
 };
-
-const styles = StyleSheet.create({});
 
 const kTextFieldWebStyle: any = {
     /** Remove browser specific styling. */

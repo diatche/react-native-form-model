@@ -10,7 +10,7 @@ export default class SwitchInputFieldModel extends InputFieldModel<
     boolean
 > {
     constructor(options: SwitchInputFieldModelOptions) {
-        let { parseInput = value => !!value } = options;
+        const { parseInput = value => !!value } = options;
         super({
             ...options,
             parseInput,

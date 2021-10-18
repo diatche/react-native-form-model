@@ -1,5 +1,6 @@
 import { isNaN } from 'lodash';
 import { KeyboardTypeOptions, TextInputProps } from 'react-native';
+
 import { FieldModelOptions } from './FieldModel';
 import InputFieldModel, {
     InputFieldModelOptions,
@@ -66,7 +67,7 @@ export default class KeyboardInputFieldModel<T>
     submitOnChangeValue: boolean;
 
     constructor(options: KeyboardInputFieldModelOptions<T>) {
-        let optionsWithDefaults = {
+        const optionsWithDefaults = {
             ...KeyboardInputFieldModel.defaults<T>(options),
             ...options,
         };
@@ -79,7 +80,7 @@ export default class KeyboardInputFieldModel<T>
         this.optional = optionsWithDefaults.optional;
         this.autoCapitalize = optionsWithDefaults.autoCapitalize;
 
-        let {
+        const {
             multiline = false,
             autoFocus = false,
             clearTextOnFocus = false,

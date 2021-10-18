@@ -1,9 +1,10 @@
 import React from 'react';
 import { StyleSheet, View, ViewProps } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
+
+import { SectionModel } from '../models';
 import { PaperThemeWithForm } from '../models/FormStyle';
 import { useObservableIfNeeded } from '../util/reactUtil';
-import { SectionModel } from '../models';
 import Divider from './Divider';
 import FormRow from './FormRow';
 
@@ -44,7 +45,7 @@ const FormSection: React.FC<FormSectionProps> = ({
         }
     }
 
-    let rows = section.rows.map((row, i) => (
+    const rows = section.rows.map((row, i) => (
         <View key={row.key} style={styles.rowAndDivider}>
             <FormRow row={row} />
             {i < maxIndex ? <Divider style={styles.divider} /> : null}

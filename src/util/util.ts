@@ -9,8 +9,8 @@
  *
  * @param input An object with all the keys of `Keys`. The values do not matter.
  */
-export function safeKeyList<Keys extends string | number | symbol>(
-    input: { [K in Keys]: any }
-): ReadonlyArray<Keys> {
+export function safeKeyList<Keys extends string | number | symbol>(input: {
+    [K in Keys]: any;
+}): readonly Keys[] {
     return Object.keys(input) as Keys[];
 }

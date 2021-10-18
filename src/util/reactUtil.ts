@@ -1,28 +1,28 @@
-import React from 'react';
 import _ from 'lodash';
+import moment, { Duration, Moment } from 'moment';
+import React from 'react';
 import {
-    LayoutChangeEvent,
-    InteractionManager,
-    Platform,
     Animated,
+    InteractionManager,
+    LayoutChangeEvent,
+    Platform,
 } from 'react-native';
 import {
-    bindCallback,
     BehaviorSubject,
     MonoTypeOperatorFunction,
     Observable,
     Subject,
+    bindCallback,
 } from 'rxjs';
 import {
     combineLatest,
     distinctUntilChanged,
+    finalize,
     map,
     skip,
     take,
-    finalize,
 } from 'rxjs/operators';
-import { Duration, Moment } from 'moment';
-import moment from 'moment';
+
 import {
     DateUnit,
     destructureDuration,
@@ -78,14 +78,15 @@ export const useLayout = (options?: {
     updateOnChange?: boolean;
 }): [ILayout | undefined, (event: LayoutChangeEvent) => void] => {
     let layoutState: any;
-    let layoutRef = React.useRef<ILayout | undefined>();
+    const layoutRef = React.useRef<ILayout | undefined>();
     if (options?.updateOnChange) {
+        // eslint-disable-next-line react-hooks/rules-of-hooks
         layoutState = React.useState<ILayout | undefined>();
     }
 
     const onLayout = React.useCallback((event: LayoutChangeEvent) => {
-        let newLayout = event.nativeEvent.layout;
-        let layoutWithPrevious = {
+        const newLayout = event.nativeEvent.layout;
+        const layoutWithPrevious = {
             ...newLayout,
             previous: layoutRef.current,
         };
@@ -96,6 +97,7 @@ export const useLayout = (options?: {
             layoutRef.current = newLayout;
             layoutState?.[1](newLayout);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return [layoutRef.current, onLayout];
@@ -132,7 +134,7 @@ export function animatedObservable(value: Animated.Value): Observable<number> {
     } else {
         subject = new Subject<number>();
     }
-    let animatedSub = value.addListener(({ value }) => {
+    const animatedSub = value.addListener(({ value }) => {
         subject.next(value);
     });
     return subject.pipe(
@@ -207,6 +209,7 @@ export function usePromise<T>(
         return () => {
             active = false;
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [_promise, ...dependencies]);
     return res;
 }
@@ -215,7 +218,7 @@ export function useImport<T>(
     importPromise: Promise<T> | (() => Promise<T> | undefined),
     options?: { onComplete?: (result: UsePromiseResult<T>) => void }
 ): Partial<T> {
-    let m = usePromise(importPromise, [], options);
+    const m = usePromise(importPromise, [], options);
     return m.value || {};
 }
 
@@ -242,7 +245,7 @@ export function useObservable<T>(
             defaultValue = _observable.value;
         } else {
             // Check for immediate value
-            let sub = _observable?.pipe(take(1)).subscribe(value => {
+            const sub = _observable?.pipe(take(1)).subscribe(value => {
                 defaultValue = value;
             });
             sub?.unsubscribe();
@@ -256,7 +259,7 @@ export function useObservable<T>(
 
     // TODO: use rx dispatch to avoid extra setState with BehaviorSubject and immediate values
     React.useEffect(() => {
-        let sub = _observable?.pipe(distinctUntilChanged()).subscribe({
+        const sub = _observable?.pipe(distinctUntilChanged()).subscribe({
             next: value => {
                 setState({ value, complete: false });
                 options?.onChange?.(value);
@@ -268,6 +271,7 @@ export function useObservable<T>(
             sub?.unsubscribe();
             options?.onUnmount?.();
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [_observable, ...dependencies]);
 
     return state;
@@ -285,7 +289,7 @@ export function useBehaviorSubject<T>(
     const [value, setValue] = React.useState(_subject.value);
 
     React.useEffect(() => {
-        let sub = _subject
+        const sub = _subject
             ?.pipe(distinctUntilChanged(), skip(1))
             .subscribe(value => {
                 setValue(value);
@@ -295,6 +299,7 @@ export function useBehaviorSubject<T>(
             sub?.unsubscribe();
             options?.onUnmount?.();
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [_subject, ...dependencies]);
 
     return value;
@@ -312,8 +317,15 @@ export function useObservableIfNeeded<T>(
     dependencies?: any[]
 ): UseObservableResult<T> {
     const [_maybeObservable] = React.useState(maybeObservable);
+    const observableResult = useObservable(
+        () =>
+            _maybeObservable instanceof Observable
+                ? _maybeObservable
+                : new BehaviorSubject<T>(undefined as any),
+        dependencies
+    );
     if (_maybeObservable instanceof Observable) {
-        return useObservable(() => _maybeObservable, dependencies);
+        return observableResult;
     }
     return {
         value: _maybeObservable,
@@ -329,18 +341,20 @@ export function useObservableIfNeeded<T>(
  * @param options
  * @returns
  */
-export function createBehaviorSubject<T>(
+export function useValueAsBehaviorSubject<T>(
     value: T,
     options?: { serializer?: (value: T) => any }
 ): BehaviorSubject<T> {
     const subject = React.useRef(new BehaviorSubject(value)).current;
     React.useEffect(() => {
         subject.next(value);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [options?.serializer ? options.serializer(value) : value]);
     React.useEffect(() => {
         return () => {
             subject.complete();
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     return subject;
 }
@@ -375,7 +389,7 @@ export function useCurrentDateInterval(duration: Duration): {
         stateRef.current.duration?.asMilliseconds()
     ) {
         // We must fix the current date to stop infinite loop on start.
-        let [timeValue, timeUnit] = destructureDuration(duration);
+        const [timeValue, timeUnit] = destructureDuration(duration);
         stateRef.current = {
             duration,
             timeValue,
@@ -384,7 +398,7 @@ export function useCurrentDateInterval(duration: Duration): {
         };
     }
 
-    let { value: date = stateRef.current.initDate! } = useObservable(() => {
+    const { value: date = stateRef.current.initDate! } = useObservable(() => {
         return significantTimeChanges({
             significantUnit: stateRef.current.timeUnit!,
         });
@@ -407,6 +421,7 @@ export function useLockBodyScroll() {
         return;
     }
 
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     React.useLayoutEffect(() => {
         // Get original body overflow
         const originalStyle = window.getComputedStyle(document.body).overflow;

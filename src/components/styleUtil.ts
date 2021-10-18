@@ -1,4 +1,5 @@
 import { FlexStyle } from 'react-native';
+
 import { FieldAlignment } from '../models';
 
 export const kAlignmentToJustifyContentMap: {

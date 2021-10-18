@@ -14,7 +14,6 @@ export { default as Divider } from './Divider';
 export * from './Divider';
 
 export { default as FloatInputField } from './FloatInputField';
-export * from './FloatInputField';
 
 export { default as Form } from './Form';
 export * from './Form';
@@ -50,7 +49,6 @@ export { default as TextInputField } from './TextInputField';
 export * from './TextInputField';
 
 export { default as TimeInputField } from './TimeInputField';
-export * from './TimeInputField';
 
 export { default as ToggleButtonField } from './ToggleButtonField';
 export * from './ToggleButtonField';

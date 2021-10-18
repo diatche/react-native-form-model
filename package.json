@@ -28,7 +28,8 @@
         "coverage": "jest --coverage",
         "build": "rollup -c",
         "watch": "rollup -c -w",
-        "prepack": "rm -R dist 2> /dev/null; yarn build"
+        "prepack": "rm -R dist 2> /dev/null; yarn build",
+        "format": "eslint . --fix"
     },
     "peerDependencies": {
         "@react-native-picker/picker": "^1.9.0",
@@ -69,9 +70,15 @@
         "@types/react-native-calendars": "^1.505.2",
         "@types/react-test-renderer": "^16.0.0",
         "@types/semver-compare": "^1.0.1",
+        "eslint": "^7.32.0",
+        "eslint-config-prettier": "^8.3.0",
+        "eslint-config-universe": "^7.0.1",
+        "eslint-plugin-react-hooks": "^4.2.0",
         "i18n-js": "^3.7.1",
         "jest": "^26.6.3",
         "jest-unique-reporter": "^1.1.0",
+        "prettier": "^2.3.2",
+        "prettier-eslint": "^13.0.0",
         "react": "16.13.1",
         "react-native": "0.63.4",
         "react-native-calendars": "^1.1255.0",

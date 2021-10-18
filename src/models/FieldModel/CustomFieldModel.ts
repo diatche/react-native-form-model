@@ -1,4 +1,5 @@
 import { ViewProps } from 'react-native';
+
 import FieldModel, { FieldModelOptions } from './FieldModel';
 
 export interface CustomFieldModelOptions extends FieldModelOptions {

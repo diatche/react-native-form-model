@@ -4,6 +4,15 @@
 
 Changes on `main` will be listed here.
 
+### Breaking Changes
+
+-   [[#11](https://github.com/diatche/react-native-form-model/pull/11)] `createBehaviorSubject` renamed to `useValueAsBehaviorSubject`.
+-   [[#11](https://github.com/diatche/react-native-form-model/pull/11)] Removed default export from `FieldModel` directory.
+
+### Other
+
+-   [[#11](https://github.com/diatche/react-native-form-model/pull/11)] Added ESLint.
+
 ## 0.6.1
 
 18 Aug 2021

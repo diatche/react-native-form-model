@@ -7,9 +7,10 @@ import {
     ViewStyle,
 } from 'react-native';
 import { TouchableRipple, useTheme } from 'react-native-paper';
+
+import { LineBreakFieldModel, RowModel } from '../models';
 import { PaperThemeWithForm } from '../models/FormStyle';
 import { useObservable } from '../util/reactUtil';
-import { LineBreakFieldModel, RowModel } from '../models';
 import FormField from './FormField';
 
 // TODO: Optimise updates with React.memo().
@@ -24,7 +25,7 @@ const FormRow: React.FC<FormRowProps> = ({
     ...otherProps
 }: FormRowProps) => {
     const theme = useTheme() as PaperThemeWithForm;
-    let lineInfos: { fields: React.ReactNode[]; style?: ViewStyle }[] = [
+    const lineInfos: { fields: React.ReactNode[]; style?: ViewStyle }[] = [
         { fields: [] },
     ];
     let lineIndex = 0;
@@ -32,9 +33,9 @@ const FormRow: React.FC<FormRowProps> = ({
         () => row.visibleFields$(),
         [row]
     );
-    for (let field of visibleFields) {
+    for (const field of visibleFields) {
         if (field instanceof LineBreakFieldModel) {
-            let lineStyle: ViewStyle = {};
+            const lineStyle: ViewStyle = {};
             if (field.lineHeight) {
                 lineStyle.minHeight = field.lineHeight;
             }
@@ -59,7 +60,7 @@ const FormRow: React.FC<FormRowProps> = ({
             <FormField key={field.key} field={field} style={styles.field} />
         );
     }
-    let lineViews = lineInfos.map((lineInfo, i) => {
+    const lineViews = lineInfos.map((lineInfo, i) => {
         let lineStyle: StyleProp<ViewStyle> = styles.line;
         if (lineInfo.style) {
             lineStyle = [lineStyle, lineInfo.style];
@@ -76,7 +77,7 @@ const FormRow: React.FC<FormRowProps> = ({
     if (typeof height !== 'undefined') {
         style = { minHeight: height };
     }
-    let compoundStyle = [styles.container, style, outerStyle];
+    const compoundStyle = [styles.container, style, outerStyle];
     if (row.onPress) {
         const colors = row.resolveStyleValue('colors', theme.form);
         const roundness = row.resolveStyleValue('roundness', theme.form);

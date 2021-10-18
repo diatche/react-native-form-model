@@ -1,4 +1,5 @@
 import { map } from 'rxjs/operators';
+
 import LabelFieldModel, { LabelFieldModelOptions } from './LabelFieldModel';
 
 export interface ErrorFieldModelOwnOptions {
@@ -13,7 +14,8 @@ export default class ErrorFieldModel extends LabelFieldModel {
     readonly formatErrors: (errors: Error[]) => string;
 
     constructor(options: ErrorFieldModelOptions) {
-        let optionsWithDefaults = ErrorFieldModel.optionsWithDefaults(options);
+        const optionsWithDefaults =
+            ErrorFieldModel.optionsWithDefaults(options);
         super(optionsWithDefaults);
         this.formatErrors = optionsWithDefaults.formatErrors;
     }

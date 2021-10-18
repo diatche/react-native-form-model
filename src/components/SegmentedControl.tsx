@@ -8,6 +8,7 @@ import {
     ViewStyle,
 } from 'react-native';
 import { Text, TouchableRipple, useTheme } from 'react-native-paper';
+
 import { PaperThemeWithForm } from '../models/FormStyle';
 import ClearButton from './ClearButton';
 
@@ -96,7 +97,7 @@ const SegmentedControl = React.memo(
             onSelect?.(index);
         };
 
-        let items = possibleValues.map((value, i, items) => {
+        const items = possibleValues.map((value, i, items) => {
             const itemCount = items.length;
             const isSelected = i === selectedIndex;
             return (
@@ -118,7 +119,7 @@ const SegmentedControl = React.memo(
                 >
                     <Text
                         selectable={false}
-                        adjustsFontSizeToFit={true}
+                        adjustsFontSizeToFit
                         minimumFontScale={0.6}
                         numberOfLines={1}
                         style={[

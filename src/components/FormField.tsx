@@ -9,12 +9,8 @@ import {
     ViewStyle,
 } from 'react-native';
 import { Switch, useTheme } from 'react-native-paper';
-import { PaperThemeWithForm } from '../models/FormStyle';
-import {
-    useBehaviorSubject,
-    useObservable,
-    useObservableIfNeeded,
-} from '../util/reactUtil';
+import { BehaviorSubject } from 'rxjs';
+
 import {
     CustomFieldModel,
     DateInputFieldModel,
@@ -25,21 +21,25 @@ import {
     SwitchInputFieldModel,
     TimeInputFieldModel,
 } from '../models';
-import FormLabel from './FormLabel';
-import SegmentedControl from './SegmentedControl';
-import TextInputField from './TextInputField';
-import TimeInputField from './TimeInputField';
-import { kAlignmentToJustifyContentMap } from './styleUtil';
+import ButtonFieldModel from '../models/FieldModel/ButtonFieldModel';
 import ErrorFieldModel from '../models/FieldModel/ErrorFieldModel';
 import InputFieldModel, {
     InputFieldState,
 } from '../models/FieldModel/InputFieldModel';
-import DatePicker from './DatePicker';
-import Picker from './Picker';
-import { BehaviorSubject } from 'rxjs';
-import _ from 'lodash';
-import ButtonFieldModel from '../models/FieldModel/ButtonFieldModel';
+import { PaperThemeWithForm } from '../models/FormStyle';
+import {
+    useBehaviorSubject,
+    useObservable,
+    useObservableIfNeeded,
+} from '../util/reactUtil';
 import Button from './Button';
+import DatePicker from './DatePicker';
+import FormLabel from './FormLabel';
+import Picker from './Picker';
+import SegmentedControl from './SegmentedControl';
+import TextInputField from './TextInputField';
+import TimeInputField from './TimeInputField';
+import { kAlignmentToJustifyContentMap } from './styleUtil';
 
 // TODO: Optimise updates with React.memo().
 
@@ -55,7 +55,7 @@ const FormField: React.FC<FormFieldProps> = ({
     const theme = useTheme() as PaperThemeWithForm;
     const formStyle = field.resolveStyle(theme.form);
     const justifyContent = kAlignmentToJustifyContentMap[field.align];
-    let innerContainerStyle: ViewStyle = {
+    const innerContainerStyle: ViewStyle = {
         justifyContent,
     };
     if (field.flex) {
@@ -113,7 +113,7 @@ const FormField: React.FC<FormFieldProps> = ({
     };
 
     let invisibleContainerField: JSX.Element | undefined;
-    let inlineViews: React.ReactNode[] = [];
+    const inlineViews: React.ReactNode[] = [];
 
     if (field instanceof LabelFieldModel) {
         const { value: title } = useObservableIfNeeded(field.title);
@@ -263,11 +263,11 @@ const FormField: React.FC<FormFieldProps> = ({
             );
         }
         if (isIntegrated || !field.disabled) {
-            let picker = (
+            const picker = (
                 <DatePicker
                     key={`${field.key}_picker`}
                     value={date}
-                    submitOnChange={true}
+                    submitOnChange
                     onSubmit={date => {
                         setEditing(false);
                         field.setInput(date);
@@ -322,15 +322,15 @@ const FormField: React.FC<FormFieldProps> = ({
                 );
             }
             if (isIntegrated || !field.disabled) {
-                let picker = (
+                const picker = (
                     <DatePicker
                         key={`${field.key}_picker`}
                         value={dateValue}
                         disabled={field.disabled}
-                        submitOnChange={true}
+                        submitOnChange
                         onSubmit={date => {
                             setEditing(false);
-                            let time = moment.duration(
+                            const time = moment.duration(
                                 date.diff(date.clone().startOf('day'))
                             );
                             field.setInput(time);
