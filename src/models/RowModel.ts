@@ -1,34 +1,36 @@
+import _ from 'lodash';
 import { GestureResponderEvent } from 'react-native';
-import FieldModel, {
+import { BehaviorSubject, Observable } from 'rxjs';
+
+import {
+    CustomFieldModel,
+    CustomFieldModelOptions,
     DateInputFieldModel,
     DateInputFieldModelOptions,
+    FieldModel,
     FieldModelOptions,
-    LabelFieldModelOptions,
+    InputFieldModelOptions,
     KeyboardInputFieldModel,
     KeyboardInputFieldModelOptions,
     LabelFieldModel,
-    TimeInputFieldModelOptions,
-    TimeInputFieldModel,
-    OptionInputFieldModelOptions,
-    OptionInputFieldModel,
+    LabelFieldModelOptions,
     LineBreakFieldModel,
     LineBreakFieldModelOptions,
-    CustomFieldModelOptions,
-    CustomFieldModel,
-    InputFieldModelOptions,
-    SwitchInputFieldModelOptions,
+    OptionInputFieldModel,
+    OptionInputFieldModelOptions,
     SwitchInputFieldModel,
+    SwitchInputFieldModelOptions,
+    TimeInputFieldModel,
+    TimeInputFieldModelOptions,
 } from './FieldModel';
-import FormElement, { FormElementOptions } from './FormElement';
-import { BehaviorSubject, Observable } from 'rxjs';
-import _ from 'lodash';
+import ButtonFieldModel, {
+    ButtonFieldModelOptions,
+} from './FieldModel/ButtonFieldModel';
 import ErrorFieldModel, {
     ErrorFieldModelOptions,
 } from './FieldModel/ErrorFieldModel';
 import InputFieldModel from './FieldModel/InputFieldModel';
-import ButtonFieldModel, {
-    ButtonFieldModelOptions,
-} from './FieldModel/ButtonFieldModel';
+import FormElement, { FormElementOptions } from './FormElement';
 
 export type ModifierType = 'margin';
 
@@ -52,7 +54,7 @@ type AddFieldModelOptionOverrides = Pick<
     FieldModelOptions,
     AddFieldModelOverrideKeys
 >;
-export type AddFieldModelOptions<T> = Omit<
+export type AddFieldModelOptions = Omit<
     FieldModelOptions,
     AddFieldModelOverrideKeys
 >;
@@ -177,11 +179,11 @@ export default class RowModel extends FormElement {
             AddFieldModelOverrideKeys
         >
     ) {
-        let line = new LineBreakFieldModel({
+        const line = new LineBreakFieldModel({
             ...options,
             ...this._fieldOptionsOverrides(),
         });
-        let field = new ErrorFieldModel({
+        const field = new ErrorFieldModel({
             ...options,
             ...this._fieldOptionsOverrides(),
         });
@@ -271,7 +273,7 @@ export default class RowModel extends FormElement {
         );
     }
 
-    addSwitchInput<T>(
+    addSwitchInput(
         options:
             | Omit<SwitchInputFieldModelOptions, AddFieldModelOverrideKeys>
             | BehaviorSubject<boolean>
@@ -306,7 +308,7 @@ export default class RowModel extends FormElement {
 
     private _applyModifiers() {
         if (this._modifiers.length !== 0) {
-            for (let modifier of this._modifiers) {
+            for (const modifier of this._modifiers) {
                 switch (modifier.type) {
                     case 'margin':
                         this._applyMarginModifier(modifier);
@@ -321,15 +323,15 @@ export default class RowModel extends FormElement {
     private _applyMarginModifier(modifier: FormModifier) {
         // Remove margin between last two fields
         let marginRemaining = modifier.value;
-        let prevField = this.fields[this.fields.length - 2];
+        const prevField = this.fields[this.fields.length - 2];
         if (prevField) {
-            let marginPrev = Math.floor(marginRemaining / 2);
+            const marginPrev = Math.floor(marginRemaining / 2);
             marginRemaining -= marginPrev;
             prevField.style = _.merge(prevField.style || {}, {
                 marginRight: marginPrev,
             });
         }
-        let field = this.fields[this.fields.length - 1];
+        const field = this.fields[this.fields.length - 1];
         field.style = _.merge(field.style || {}, {
             marginLeft: marginRemaining,
         });

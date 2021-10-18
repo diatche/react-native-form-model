@@ -1,5 +1,5 @@
-import React from 'react';
 import { Picker as NativePicker } from '@react-native-picker/picker';
+import React from 'react';
 import {
     LayoutChangeEvent,
     Platform,
@@ -11,16 +11,15 @@ import {
     ViewProps,
     ViewStyle,
 } from 'react-native';
-import FormLabel from './FormLabel';
 import { Modal, Portal, useTheme } from 'react-native-paper';
+
 import { PaperThemeWithForm } from '../models/FormStyle';
+import FormLabel from './FormLabel';
 import OptionList from './OptionList';
-import _ from 'lodash';
 
 // TODO: Background color is not supported or broken on Android. See [issue](https://github.com/react-native-picker/picker/issues/112)
 
 const isIOS = Platform.OS === 'ios';
-const isAndroid = Platform.OS === 'android';
 const isWeb = Platform.OS === 'web';
 
 /**

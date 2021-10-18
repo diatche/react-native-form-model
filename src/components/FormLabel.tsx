@@ -7,6 +7,7 @@ import {
     ViewProps,
 } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
+
 import { FieldAlignment } from '../models/FieldModel';
 import { PaperThemeWithForm } from '../models/FormStyle';
 import { kAlignmentToJustifyContentMap } from './styleUtil';
@@ -42,7 +43,7 @@ export default React.memo(function FormLabel({
             selectable={selectable}
             style={[styles.text, textStyle]}
             theme={theme}
-            adjustsFontSizeToFit={true}
+            adjustsFontSizeToFit
             minimumFontScale={0.6}
         >
             {title}

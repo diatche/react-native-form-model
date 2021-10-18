@@ -1,6 +1,7 @@
+import _ from 'lodash';
 import React from 'react';
 import { ToggleButton } from 'react-native-paper';
-import _ from 'lodash';
+
 import ControlField, {
     ControlFieldProps,
     ControlFieldState,

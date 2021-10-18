@@ -1,6 +1,7 @@
 import React from 'react';
 import { ViewProps } from 'react-native';
 import { Divider as PaperDivider, useTheme } from 'react-native-paper';
+
 import { PaperThemeWithForm } from '../models/FormStyle';
 
 export interface DividerProps extends ViewProps {

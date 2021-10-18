@@ -1,4 +1,5 @@
 import { BehaviorSubject } from 'rxjs';
+
 import { MaybeObservable } from '../../util/reactUtil';
 import FormElement, {
     EditableFieldModel,
@@ -34,7 +35,7 @@ export default class FieldModel extends FormElement {
 
     constructor(options: FieldModelOptions) {
         super(options);
-        let { align = 'left', visible = true } = options;
+        const { align = 'left', visible = true } = options;
         this.errors = new BehaviorSubject<Error[]>([]);
         this.sectionIndex = options.sectionIndex;
         this.rowIndex = options.rowIndex;

@@ -1,22 +1,19 @@
-export * from './FieldModel';
-export { default as FieldModel } from './FieldModel';
-
 import * as FormElement from './FormElement';
-export { FormElement };
-
 import * as FormError from './FormError';
+import FormModel from './FormModel';
+import * as FormUtil from './FormUtil';
+
+export * from './FieldModel';
+export { FormElement };
 export { FormError };
 
 export * from './FormModel';
 export { default as FormModel } from './FormModel';
-import FormModel from './FormModel';
 export default FormModel;
 
 export * from './FormStyle';
 
 export * from './formTypes';
-
-import * as FormUtil from './FormUtil';
 export { FormUtil };
 
 export * from './RowModel';

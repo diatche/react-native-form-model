@@ -15,7 +15,8 @@ export interface LineBreakFieldModelOptions
 
 export default class LineBreakFieldModel
     extends FieldModel
-    implements LineBreakFieldModelOwnOptions {
+    implements LineBreakFieldModelOwnOptions
+{
     lineHeight?: number;
     flex?: number;
     marginTop?: number;

@@ -1,7 +1,7 @@
-import moment, { Duration } from 'moment';
-import { Moment } from 'moment';
+import moment, { Moment } from 'moment';
 import { Observable, Subject } from 'rxjs';
 import { finalize } from 'rxjs/operators';
+
 import { safeKeyList } from './util';
 
 export type DateUnit =
@@ -50,15 +50,15 @@ export const significantTimeChanges = (
     }
 
     let periodTimer: any;
-    let stream = new Subject<Moment>();
+    const stream = new Subject<Moment>();
 
     let waitForNext = () => {
-        let now = moment();
-        let periodEnd = now
+        const now = moment();
+        const periodEnd = now
             .clone()
             .startOf(significantUnit)
             .add(1, significantUnit);
-        let msLeft = periodEnd.valueOf() - now.valueOf();
+        const msLeft = periodEnd.valueOf() - now.valueOf();
         periodTimer = setTimeout(() => {
             periodTimer = 0;
             stream.next(periodEnd);
@@ -81,8 +81,8 @@ export const destructureDuration = (
 ): [number, DateUnit] => {
     let dateUnit: DateUnit | undefined;
     let unitValue = 0;
-    for (let calUnit of kDateUnitsDes) {
-        let value = duration.get(calUnit);
+    for (const calUnit of kDateUnitsDes) {
+        const value = duration.get(calUnit);
         if (value === 0 || isNaN(value)) {
             continue;
         }

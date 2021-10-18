@@ -21,7 +21,7 @@ export default class FormModel extends FormElement {
 
     constructor(options: FormModelOptions = {}) {
         super({ ...options, form: {} as FormModel });
-        let { showErrors = false } = options;
+        const { showErrors = false } = options;
         this.showErrors = showErrors;
     }
 
@@ -40,7 +40,7 @@ export default class FormModel extends FormElement {
     addSection(
         options?: Omit<SectionModelOptions, 'form' | 'sectionIndex'>
     ): SectionModel {
-        let section = new SectionModel({
+        const section = new SectionModel({
             ...options,
             form: this,
             sectionIndex: this.sections.length,

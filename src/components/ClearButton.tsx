@@ -1,9 +1,9 @@
 import React from 'react';
-import _ from 'lodash';
 import { Platform, StyleSheet, TextInputProps, ViewProps } from 'react-native';
 import { TouchableRipple, useTheme } from 'react-native-paper';
-import FormAssets from './FormAssets';
+
 import { PaperThemeWithForm } from '../models/FormStyle';
+import FormAssets from './FormAssets';
 
 const isIOS = Platform.OS === 'ios';
 

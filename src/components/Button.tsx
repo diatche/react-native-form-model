@@ -11,6 +11,7 @@ import {
     ViewStyle,
 } from 'react-native';
 import { ActivityIndicator, Text, useTheme } from 'react-native-paper';
+
 import { PaperThemeWithForm } from '../models/FormStyle';
 
 export interface ChildProps extends ViewProps {
@@ -50,9 +51,9 @@ const Button: React.FC<ButtonProps> = ({
     ...otherProps
 }) => {
     const theme = useTheme() as PaperThemeWithForm;
-    let primaryColor = color || theme.colors.primary;
+    const primaryColor = color || theme.colors.primary;
     let stateColor = disabled ? theme.colors.disabled : primaryColor;
-    let containerStyle: ViewStyle = {
+    const containerStyle: ViewStyle = {
         borderRadius: theme.roundness,
     };
     let accessoryStyle: StyleProp<ViewStyle> | undefined = undefined;
@@ -91,7 +92,7 @@ const Button: React.FC<ButtonProps> = ({
         );
     const activity = () => (
         <ActivityIndicator
-            hidesWhenStopped={true}
+            hidesWhenStopped
             animating={loading}
             size={activityIndicatorSize}
             style={[styles.accessory, accessoryStyle]}

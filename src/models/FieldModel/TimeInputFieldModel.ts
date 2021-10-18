@@ -1,11 +1,12 @@
-import { lz } from '../../util/locale';
 import moment, { Duration, Moment } from 'moment';
+import { TextInputProps } from 'react-native';
 import { Observable, Subscription } from 'rxjs';
+
+import { lz } from '../../util/locale';
 import { MaybeObservable } from '../../util/reactUtil';
 import InputFieldModel, {
     ParsedInputFieldModelOptions,
 } from './InputFieldModel';
-import { TextInputProps } from 'react-native';
 import { KeyboardInputFieldModelBaseOptions } from './KeyboardInputFieldModel';
 
 export interface TimeInputFieldModelOptions
@@ -32,10 +33,10 @@ export default class TimeInputFieldModel
     private _refDaySub?: Subscription;
 
     constructor(options: TimeInputFieldModelOptions) {
-        let {
+        const {
             parseInput = value => value,
             validation = duration => {
-                let refDay = this.getRefDay();
+                const refDay = this.getRefDay();
                 if (duration && !refDay) {
                     return lz('missingDate');
                 }
@@ -55,7 +56,7 @@ export default class TimeInputFieldModel
             parseInput,
             validation,
         });
-        let {
+        const {
             mode = 'plain',
             autoFocus = false,
             futureDisabled = false,

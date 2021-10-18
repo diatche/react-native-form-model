@@ -16,7 +16,7 @@ export default class SectionModel extends FormElement {
     constructor(options: SectionModelOptions) {
         super(options);
         this.sectionIndex = options.sectionIndex;
-        let { title = '', footer = '' } = options;
+        const { title = '', footer = '' } = options;
         this.title = title;
         this.footer = footer;
     }
@@ -24,7 +24,7 @@ export default class SectionModel extends FormElement {
     addRow(
         options?: Omit<RowModelOptions, 'form' | 'sectionIndex' | 'rowIndex'>
     ): RowModel {
-        let row = new RowModel({
+        const row = new RowModel({
             ...options,
             form: this.form,
             sectionIndex: this.sectionIndex,

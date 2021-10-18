@@ -2,13 +2,13 @@ import _ from 'lodash';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTheme } from 'react-native-paper';
-import { BehaviorSubject } from 'rxjs';
+
 import FormModel from '../models/FormModel';
 import { PaperThemeWithForm } from '../models/FormStyle';
 import {
-    createBehaviorSubject,
     useBehaviorSubject,
     usePrevious,
+    useValueAsBehaviorSubject,
 } from '../util';
 import Form, { FormProps } from './Form';
 import FormAssets from './FormAssets';
@@ -50,10 +50,11 @@ export default function OptionList<T = any>({
         if (!_.isEqual(items, previousItems)) {
             dataIdRef.current += 1;
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [items]);
 
     // Deep forward selected index
-    const selectedIndex$ = createBehaviorSubject(selectedIndex);
+    const selectedIndex$ = useValueAsBehaviorSubject(selectedIndex);
 
     const form = React.useMemo(() => {
         const form = new FormModel();
@@ -76,6 +77,7 @@ export default function OptionList<T = any>({
                 })
                 .addCustom(() =>
                     FormAssets.shared.CheckmarkIcon &&
+                    // eslint-disable-next-line react-hooks/rules-of-hooks
                     index === useBehaviorSubject(selectedIndex$) ? (
                         <FormAssets.shared.CheckmarkIcon
                             size={24}
@@ -88,7 +90,18 @@ export default function OptionList<T = any>({
                 );
         });
         return form;
-    }, [dataIdRef.current, theme]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [
+        dataIdRef.current,
+        theme,
+        chechmarkColor,
+        formatItem,
+        itemColor,
+        items,
+        onSelect,
+        selectedIndex$,
+        title,
+    ]);
 
     return (
         <Form

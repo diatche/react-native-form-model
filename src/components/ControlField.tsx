@@ -1,6 +1,7 @@
+import _ from 'lodash';
 import React from 'react';
 import { View } from 'react-native';
-import _ from 'lodash';
+
 import LabelField, { LabelFieldProps, LabelFieldState } from './LabelField';
 
 export interface ControlFieldProps<OutputType, InputType>
@@ -46,7 +47,7 @@ export default class ControlField<
 
     constructor(props: P) {
         super(props);
-        let state = { value: props.value };
+        const state = { value: props.value };
         this.state = {
             ...this.setValueMutation(state),
             ...this.encodeMutation(state),
@@ -94,13 +95,13 @@ export default class ControlField<
     }
 
     validate() {
-        let v = this.validation(this.state.value);
+        const v = this.validation(this.state.value);
         this.props.onValidation?.(v);
         return v;
     }
 
     parse(userInput: I): ParseResult<O> {
-        let { parse } = this.props;
+        const { parse } = this.props;
         if (!parse) {
             return { value: userInput as any, parsable: true };
         }
@@ -123,7 +124,7 @@ export default class ControlField<
     }
 
     onValueChange = ({ value, error = '' }: { value: O; error?: string }) => {
-        let v = this.validation(value);
+        const v = this.validation(value);
         this.props.onValueChange?.({
             value: v.valid ? value : this.state.value,
             error,
@@ -154,8 +155,8 @@ export default class ControlField<
     }
 
     handleUserInput({ userInput }: { userInput: I }): any {
-        let data = this.parse(userInput);
-        let newState = {
+        const data = this.parse(userInput);
+        const newState = {
             ...this.setValueMutation(data),
             userInput,
         } as S;
@@ -181,7 +182,7 @@ export default class ControlField<
     } {
         const { parsable = !newState.error } = newState;
         const validation = this.validationMutation(newState);
-        let mutation = {
+        const mutation = {
             ...newState,
             valid: !newState.error && validation.valid,
             error: newState.error || validation.error,
@@ -202,7 +203,7 @@ export default class ControlField<
                 valid: false,
             };
         }
-        let v = this.validation(
+        const v = this.validation(
             'value' in newState ? newState.value! : this.state!.value
         );
         return {
@@ -212,7 +213,7 @@ export default class ControlField<
     }
 
     private encodeMutation({ value }: { value: O }) {
-        let { encode = (value: O) => this.format(value) as any } = this.props;
+        const { encode = (value: O) => this.format(value) as any } = this.props;
         return {
             userInput: encode(value),
         } as Partial<S>;

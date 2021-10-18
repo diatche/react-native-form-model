@@ -1,10 +1,11 @@
 import { WeakRef } from '@ungap/weakrefs';
 import _ from 'lodash';
-import { BehaviorSubject, combineLatest, Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, combineLatest, of } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
-import FieldModel from './FieldModel';
+
+import { FieldModel } from './FieldModel';
 import FormModel from './FormModel';
-import { FormStyle, kDefaultFormStyle, PartialFormStyle } from './FormStyle';
+import { FormStyle, PartialFormStyle, kDefaultFormStyle } from './FormStyle';
 import { isInputFieldModelLike } from './formTypes';
 
 let _keyCounter = 0;
@@ -36,7 +37,7 @@ export default abstract class FormElement {
     private _formRef?: WeakRef<FormModel>;
 
     constructor(options: FormElementOptions) {
-        let { key = `${++_keyCounter}_${this.constructor.name}` } = options;
+        const { key = `${++_keyCounter}_${this.constructor.name}` } = options;
         this.key = key;
         this.form = options.form;
         this.style = _.cloneDeep(options.style);
@@ -46,7 +47,7 @@ export default abstract class FormElement {
     }
 
     get form(): FormModel {
-        let form = this._formRef?.deref();
+        const form = this._formRef?.deref();
         if (!form) {
             throw new Error('Trying to access a released object');
         }
@@ -66,9 +67,9 @@ export default abstract class FormElement {
         // Prevent import InputFieldModel to avoid circular dependency
         let didFocus = false;
         let allValid = true;
-        for (let field of this.iterateFields()) {
+        for (const field of this.iterateFields()) {
             if (isInputFieldModelLike(field)) {
-                let { valid } = field.validate();
+                const { valid } = field.validate();
                 if (!valid) {
                     allValid = false;
                     if (
@@ -97,8 +98,8 @@ export default abstract class FormElement {
     }
 
     fieldsWithErrors({ editedOnly = false }: ErrorOptions = {}): FieldModel[] {
-        let fieldsWithErrors: FieldModel[] = [];
-        for (let field of this.iterateFields()) {
+        const fieldsWithErrors: FieldModel[] = [];
+        for (const field of this.iterateFields()) {
             if (field.errors.value.length !== 0) {
                 if (
                     editedOnly &&
@@ -120,8 +121,8 @@ export default abstract class FormElement {
             return of([]);
         }
         const fieldCount = fields.length;
-        let errorData = fields.map(field => field.errors);
-        let editedData = editedOnly
+        const errorData = fields.map(field => field.errors);
+        const editedData = editedOnly
             ? fields.map(field =>
                   field.isEditable() ? field.edited : of(true)
               )
@@ -132,8 +133,8 @@ export default abstract class FormElement {
             combineLatest(editedData),
         ]).pipe(
             map(data => {
-                let [errorsPerField, editedFlags] = data;
-                let fieldsWithErrors: FieldModel[] = [];
+                const [errorsPerField, editedFlags] = data;
+                const fieldsWithErrors: FieldModel[] = [];
                 if (errorsPerField.length !== fieldCount) {
                     throw new Error(
                         'Modifying fields after subscribing to fieldsWithErrors$() is not supported'
@@ -143,7 +144,7 @@ export default abstract class FormElement {
                     if (editedOnly && !editedFlags[i]) {
                         continue;
                     }
-                    let fieldErrors = errorsPerField[i];
+                    const fieldErrors = errorsPerField[i];
                     if (fieldErrors.length !== 0) {
                         fieldsWithErrors.push(fields[i]);
                     }
@@ -164,17 +165,16 @@ export default abstract class FormElement {
             formatter?: (errors: Error[]) => string;
         } = {}
     ): Observable<string> {
-        const {
-            formatter = errors => errors.map(e => e.message).join('\n'),
-        } = options;
+        const { formatter = errors => errors.map(e => e.message).join('\n') } =
+            options;
         return this.flattenedErrors$(options).pipe(
             map(errors => formatter(errors))
         );
     }
 
     allFields(): FieldModel[] {
-        let fields: FieldModel[] = [];
-        for (let field of this.iterateFields()) {
+        const fields: FieldModel[] = [];
+        for (const field of this.iterateFields()) {
             fields.push(field);
         }
         return fields;
@@ -193,7 +193,7 @@ export default abstract class FormElement {
             })
         ).pipe(
             map(visibleFlags => {
-                let visibleFields: FieldModel[] = [];
+                const visibleFields: FieldModel[] = [];
                 if (visibleFlags.length !== fieldCount) {
                     throw new Error(
                         'Modifying fields after subscribing to visibleFields$() is not supported'
@@ -213,31 +213,31 @@ export default abstract class FormElement {
         if (this.form) {
             if (this.sectionIndex >= 0) {
                 // Iterate this section only
-                let section = this.form.sections[this.sectionIndex];
+                const section = this.form.sections[this.sectionIndex];
                 if (this.rowIndex >= 0) {
                     // Iterate this row only
-                    let row = section.rows[this.rowIndex];
+                    const row = section.rows[this.rowIndex];
                     if (this.fieldIndex >= 0) {
                         // Iterate this field only
                         yield row.fields[this.fieldIndex];
                     } else {
                         // Iterate all fields
-                        for (let field of row.fields) {
+                        for (const field of row.fields) {
                             yield field;
                         }
                     }
                 } else {
                     // Iterate all rows
-                    for (let row of section.rows) {
-                        for (let field of row.iterateFields()) {
+                    for (const row of section.rows) {
+                        for (const field of row.iterateFields()) {
                             yield field;
                         }
                     }
                 }
             } else {
                 // Iterate all sections
-                for (let section of this.form.sections) {
-                    for (let field of section.iterateFields()) {
+                for (const section of this.form.sections) {
+                    for (const field of section.iterateFields()) {
                         yield field;
                     }
                 }
@@ -249,19 +249,19 @@ export default abstract class FormElement {
         let style: Required<FormStyle> = _.merge({}, kDefaultFormStyle, theme);
         if (this.form) {
             if (this.sectionIndex >= 0) {
-                let section = this.form.sections[this.sectionIndex];
+                const section = this.form.sections[this.sectionIndex];
                 if (section.style) {
                     style = _.merge(style, section.style);
                 }
 
                 if (this.rowIndex >= 0) {
-                    let row = section.rows[this.rowIndex];
+                    const row = section.rows[this.rowIndex];
                     if (row.style) {
                         style = _.merge(style, row.style);
                     }
 
                     if (this.fieldIndex >= 0) {
-                        let field = row.fields[this.fieldIndex];
+                        const field = row.fields[this.fieldIndex];
                         if (field.style) {
                             style = _.merge(style, field.style);
                         }
@@ -285,7 +285,7 @@ export default abstract class FormElement {
         }
         if (this.form) {
             if (this.sectionIndex >= 0) {
-                let section = this.form.sections[this.sectionIndex];
+                const section = this.form.sections[this.sectionIndex];
                 if (section.style && key in section.style) {
                     value = FormElement._mergeStyleValues<FormStyle[K]>(
                         value,
@@ -294,7 +294,7 @@ export default abstract class FormElement {
                 }
 
                 if (this.rowIndex >= 0) {
-                    let row = section.rows[this.rowIndex];
+                    const row = section.rows[this.rowIndex];
                     if (row.style && key in row.style) {
                         value = FormElement._mergeStyleValues<FormStyle[K]>(
                             value,
@@ -303,7 +303,7 @@ export default abstract class FormElement {
                     }
 
                     if (this.fieldIndex >= 0) {
-                        let field = row.fields[this.fieldIndex];
+                        const field = row.fields[this.fieldIndex];
                         if (field.style && key in field.style) {
                             value = FormElement._mergeStyleValues<FormStyle[K]>(
                                 value,
@@ -318,8 +318,8 @@ export default abstract class FormElement {
     }
 
     private static _mergeStyleValues<T>(a: T, b?: T): T {
-        let isObjA = _.isPlainObject(a);
-        let isObjB = _.isPlainObject(b);
+        const isObjA = _.isPlainObject(a);
+        const isObjB = _.isPlainObject(b);
         if (isObjA && isObjB) {
             return _.merge({}, a, b);
         } else if (isObjA || typeof b === 'undefined') {

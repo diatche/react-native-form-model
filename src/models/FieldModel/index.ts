@@ -6,8 +6,6 @@ export { default as DateInputFieldModel } from './DateInputFieldModel';
 
 export * from './FieldModel';
 export { default as FieldModel } from './FieldModel';
-import FieldModel from './FieldModel';
-export default FieldModel;
 
 export * from './InputFieldModel';
 export { default as ControlModel } from './InputFieldModel';

@@ -1,5 +1,6 @@
-import { lz } from '../../util/locale';
 import moment, { Moment } from 'moment';
+
+import { lz } from '../../util/locale';
 import InputFieldModel, {
     ParsedInputFieldModelOptions,
 } from './InputFieldModel';
@@ -18,7 +19,7 @@ export default class DateInputFieldModel extends InputFieldModel<
     optional: boolean;
 
     constructor(options: DateInputFieldModelOptions) {
-        let {
+        const {
             parseInput = value => value,
             validation = date => {
                 if (!date) {
@@ -37,7 +38,7 @@ export default class DateInputFieldModel extends InputFieldModel<
             parseInput,
             validation,
         });
-        let { futureDisabled = false, optional = false } = options;
+        const { futureDisabled = false, optional = false } = options;
         this.futureDisabled = futureDisabled;
         this.optional = optional;
     }

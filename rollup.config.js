@@ -1,6 +1,7 @@
 import typescript from '@rollup/plugin-typescript';
-import pkg from './package.json';
 import copy from 'rollup-plugin-copy';
+
+import pkg from './package.json';
 
 const outputDefaults = {
     globals: {
@@ -16,7 +17,7 @@ const rnOutputDefaults = {
     },
 };
 
-let baseConfig = {
+const baseConfig = {
     input: 'src/index.ts',
     external: [
         'rxjs/operators',
@@ -27,7 +28,7 @@ let baseConfig = {
     ],
 };
 
-let rnConfig = {
+const rnConfig = {
     ...baseConfig,
     output: [
         {
@@ -46,7 +47,7 @@ let rnConfig = {
     ],
 };
 
-let tasks = [rnConfig];
+const tasks = [rnConfig];
 
 export default args => {
     if (args.copy) {

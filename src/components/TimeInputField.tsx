@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
-import { StyleSheet } from 'react-native';
-import TextInputField, { TextInputFieldProps } from './TextInputField';
 import { parseTimeOfDay } from '@diatche/parse-time';
 import moment, { Duration } from 'moment';
+import React, { Component } from 'react';
+import { StyleSheet } from 'react-native';
+
 import { FormValidationError } from '../models/FormError';
 import { lz } from '../util/locale';
+import TextInputField, { TextInputFieldProps } from './TextInputField';
 
 type ForwardProps = Omit<
     TextInputFieldProps<Duration | undefined>,
@@ -25,7 +26,7 @@ export default class TimeInputField extends Component<
     textInputRef = React.createRef<TextInputField<Duration | undefined>>();
 
     parse(userInput: string): { value: Duration | undefined; error: any } {
-        let value = parseTimeOfDay(userInput);
+        const value = parseTimeOfDay(userInput);
         if (value) {
             return { value: moment.duration(value.totalMs), error: null };
         } else {

@@ -1,9 +1,10 @@
+import moment, { Moment } from 'moment';
 import React, { Component } from 'react';
-import { StyleSheet, Platform, View, ViewProps, ViewStyle } from 'react-native';
+import { Platform, StyleSheet, View, ViewProps, ViewStyle } from 'react-native';
 import { Calendar, LocaleConfig } from 'react-native-calendars';
 import { Modal, Portal, Surface, withTheme } from 'react-native-paper';
-import moment, { Moment } from 'moment';
 import semverCompare from 'semver-compare';
+
 import { PaperThemeWithForm } from '../models/FormStyle';
 import { getCurrentLocale, lz } from '../util/locale';
 import Button from './Button';
@@ -180,13 +181,14 @@ class DatePicker extends Component<DatePickerProps, DatePickerState> {
             ...(event || {}),
         };
         switch (event.type) {
-            case 'set':
+            case 'set': {
                 const newState: DatePickerState = {
                     ...this.state,
                     ...this.onChange(moment(date)),
                 };
                 this.onSubmit(newState);
                 break;
+            }
             case 'dismissed':
                 this.onCancel();
                 break;
@@ -212,7 +214,7 @@ class DatePicker extends Component<DatePickerProps, DatePickerState> {
                 : this.renderFallbackPickerView();
         }
 
-        let modalContent =
+        const modalContent =
             Platform.OS === 'ios' ? (
                 <Surface style={[styles.iosModalContainer, modalStyle]}>
                     <View style={styles.iosDatePickerContainer}>
@@ -344,11 +346,11 @@ class DatePicker extends Component<DatePickerProps, DatePickerState> {
         }
         return (
             <View style={styles.calendarButtons}>
-                {this.props.mode == 'date' && (
+                {this.props.mode === 'date' && (
                     <Button
                         title={lz('today')}
                         onPress={() => this._setDate(this.today())}
-                        compact={true}
+                        compact
                         color={this.props.theme.colors.accent}
                         style={styles.calendarButton}
                     />
@@ -356,14 +358,14 @@ class DatePicker extends Component<DatePickerProps, DatePickerState> {
                 <Button
                     title={lz('cancel')}
                     onPress={() => this.onCancel()}
-                    compact={true}
+                    compact
                     style={styles.calendarButton}
                 />
                 <Button
                     title={lz('done')}
                     mode='contained'
                     onPress={() => this.onSubmit()}
-                    compact={true}
+                    compact
                     style={styles.calendarButton}
                 />
             </View>

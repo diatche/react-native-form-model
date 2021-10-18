@@ -1,18 +1,13 @@
 import React from 'react';
 import {
+    StyleProp,
     StyleSheet,
     View,
-    StyleProp,
     ViewProps,
     ViewStyle,
 } from 'react-native';
-import {
-    TouchableRipple,
-    IconButton,
-    Colors,
-    useTheme,
-} from 'react-native-paper';
-import _ from 'lodash';
+import { IconButton, TouchableRipple, useTheme } from 'react-native-paper';
+
 import { PaperThemeWithForm } from '../models/FormStyle';
 
 export interface RowProps extends ViewProps {
@@ -51,7 +46,7 @@ const Row: React.FC<RowProps> = ({
     const theme = useTheme() as PaperThemeWithForm;
     rippleColor = (rippleColor || theme.colors.primary) + '60';
 
-    let mergedStyle: any[] = [styles.row];
+    const mergedStyle: any[] = [styles.row];
     if (!fillContent) {
         mergedStyle.push(styles.rowPad);
     }
@@ -97,7 +92,7 @@ const Row: React.FC<RowProps> = ({
         );
     }
 
-    let container = (
+    const container = (
         <View style={styles.container}>
             <View style={[styles.content, contentContainerStyle]}>
                 {children}

@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import React from 'react';
 import {
     Platform,
@@ -8,6 +7,7 @@ import {
     ViewProps,
     ViewStyle,
 } from 'react-native';
+
 import FormModel from '../models';
 import FormSection from './FormSection';
 
@@ -23,7 +23,7 @@ const Form: React.FC<FormProps> = ({
     ...otherProps
 }: FormProps) => {
     const sectionCount = form.sections.length;
-    let sections = form.sections.map((section, i) => {
+    const sections = form.sections.map((section, i) => {
         let sectionStyle: StyleProp<ViewStyle> = styles.section;
         if (i !== 0 && sectionCount !== 0) {
             sectionStyle = [
