@@ -4,6 +4,11 @@
 
 Changes on `main` will be listed here.
 
+### Breaking Changes
+
+-   `createBehaviorSubject` renamed to `useValueAsBehaviorSubject`.
+-   Removed default export from `FieldModel` directory.
+
 ## 0.6.1
 
 18 Aug 2021
