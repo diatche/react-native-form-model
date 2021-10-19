@@ -12,7 +12,8 @@ import { PaperThemeWithForm } from '../models/FormStyle';
 
 export interface RowProps extends ViewProps {
     onPress?: (event: any) => void;
-    onDelete?: (event: any) => void;
+    onDelete?: () => void;
+    confirmingDelete?: boolean;
     rightAccessory?: (props: ViewProps) => React.ReactNode;
     disabled?: boolean;
     children?: any;
@@ -30,6 +31,7 @@ export interface RowProps extends ViewProps {
 const Row: React.FC<RowProps> = ({
     onPress,
     onDelete,
+    confirmingDelete = false,
     rightAccessory: renderRightAccessory,
     disabled,
     children,
@@ -76,10 +78,12 @@ const Row: React.FC<RowProps> = ({
         rightAccessory = (
             <IconButton
                 key='delete-accessory'
-                icon='delete'
+                icon={
+                    confirmingDelete ? 'close-circle' : 'close-circle-outline'
+                }
                 color={theme.form.colors.destructive}
-                size={16}
-                onPress={event => onDelete?.(event)}
+                size={confirmingDelete ? 24 : 18}
+                onPress={() => onDelete?.()}
                 style={styles.deleteIcon}
             />
         );
