@@ -4,6 +4,10 @@
 
 Changes on `main` will be listed here.
 
+### Features
+
+-   Added `confirmingDelete` flag to `Row`, which changes the delete icon to be more pronouced.
+
 ### Breaking Changes
 
 -   [[#11](https://github.com/diatche/react-native-form-model/pull/11)] `createBehaviorSubject` renamed to `useValueAsBehaviorSubject`.
