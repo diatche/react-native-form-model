@@ -4,6 +4,10 @@
 
 Changes on `main` will be listed here.
 
+## 0.7.0
+
+19 Oct 2021
+
 ### Features
 
 -   [[#12](https://github.com/diatche/react-native-form-model/pull/12)] Added `confirmingDelete` flag to `Row`, which changes the delete icon to be more pronouced.
