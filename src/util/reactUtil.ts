@@ -19,7 +19,7 @@ import {
     distinctUntilChanged,
     finalize,
     map,
-    share,
+    shareReplay,
     skip,
     take,
 } from 'rxjs/operators';
@@ -142,7 +142,7 @@ export function animatedObservable(value: Animated.Value): Observable<number> {
         finalize(() => {
             value.removeListener(animatedSub);
         }),
-        share()
+        shareReplay(1)
     );
 }
 
