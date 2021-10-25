@@ -20,6 +20,7 @@ import {
     OptionInputFieldModel,
     SwitchInputFieldModel,
     TimeInputFieldModel,
+    isInputFieldModelLike,
 } from '../models';
 import ButtonFieldModel from '../models/FieldModel/ButtonFieldModel';
 import ErrorFieldModel from '../models/FieldModel/ErrorFieldModel';
@@ -115,6 +116,18 @@ const FormField: React.FC<FormFieldProps> = ({
     let invisibleContainerField: JSX.Element | undefined;
     const inlineViews: React.ReactNode[] = [];
 
+    const focusNext = () => {
+        for (const nextField of field.iterateNextFields()) {
+            if (isInputFieldModelLike(nextField)) {
+                const nextFieldView = nextField.viewRef?.current;
+                if (nextFieldView) {
+                    nextFieldView.focus();
+                    break;
+                }
+            }
+        }
+    };
+
     if (field instanceof LabelFieldModel) {
         const { value: title } = useObservableIfNeeded(field.title);
         inlineViews.push(
@@ -187,6 +200,7 @@ const FormField: React.FC<FormFieldProps> = ({
                     }
                 }}
                 onBlur={commitState}
+                onSubmit={focusNext}
                 parse={x => field.parseState(x)}
                 format={x => field.formatValue(x)}
                 validate={x => field.normalizedValidationResult(x)}
@@ -394,6 +408,7 @@ const FormField: React.FC<FormFieldProps> = ({
                         editingStateRef.current = state;
                     }}
                     onBlur={commitState}
+                    onSubmit={focusNext}
                     align={field.align}
                     mode={field.mode}
                     style={[

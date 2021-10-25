@@ -33,7 +33,7 @@ export interface InputFieldViewRef {
 }
 
 export function isFieldModelLike(value: any): value is FieldModelLike {
-    return 'errors' in value;
+    return value && typeof value === 'object' && 'errors' in value;
 }
 
 export function isInputFieldModelLike(

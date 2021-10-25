@@ -3,7 +3,6 @@ import React from 'react';
 import {
     TextInput as NativeTextInput,
     Platform,
-    StyleSheet,
     TextInputProps,
     ViewStyle,
 } from 'react-native';
@@ -104,7 +103,10 @@ export default class TextInputField<T = string> extends ControlField<
 
         const commonProps: TextInputProps = {
             onChangeText: userInput => this.handleUserInput({ userInput }),
-            onSubmitEditing: event => this.handleBlur(event),
+            onSubmitEditing: event => {
+                this.handleBlur(event);
+                this.handleSubmit(event);
+            },
             onEndEditing: event => this.handleBlur(event),
             onBlur: event => this.handleBlur(event),
             onFocus: event => {

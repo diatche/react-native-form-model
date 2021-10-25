@@ -15,6 +15,7 @@ export interface ControlFieldProps<OutputType, InputType>
     onValidation?: (x: { valid: boolean; error?: any }) => void;
     onFocus?: (event: any) => void;
     onBlur?: (event: any) => void;
+    onSubmit?: (event: any) => void;
 }
 
 export interface ParseResult<OutputType> {
@@ -33,6 +34,10 @@ export interface ControlFieldState<OutputType, InputType>
     userInput: InputType;
     /** Did current value pass validation. */
     valid: boolean;
+}
+
+export interface ControlFieldBlurInfo {
+    didSubmit?: boolean;
 }
 
 /** @deprecated */
@@ -152,6 +157,10 @@ export default class ControlField<
         }
         this.submit();
         this.props.onBlur?.(event);
+    }
+
+    handleSubmit(event: any) {
+        this.props.onSubmit?.(event);
     }
 
     handleUserInput({ userInput }: { userInput: I }): any {
