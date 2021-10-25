@@ -218,6 +218,7 @@ const FormField: React.FC<FormFieldProps> = ({
                 selectTextOnFocus={field.selectTextOnFocus}
                 clearTextOnFocus={field.clearTextOnFocus}
                 clearButtonMode={field.clearButtonMode}
+                returnKeyType={field.returnKeyType}
                 align={field.align}
                 mode={field.mode}
                 style={[
@@ -409,6 +410,7 @@ const FormField: React.FC<FormFieldProps> = ({
                     selectTextOnFocus={field.selectTextOnFocus}
                     clearTextOnFocus={field.clearTextOnFocus}
                     clearButtonMode={field.clearButtonMode}
+                    returnKeyType={field.returnKeyType}
                     onValueChange={state => {
                         editingStateRef.current = state;
                     }}
