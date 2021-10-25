@@ -119,7 +119,7 @@ const FormField: React.FC<FormFieldProps> = ({
     const focusNext = () => {
         let didFocusNext = false;
         for (const nextField of field.iterateNextFields()) {
-            if (isInputFieldModelLike(nextField)) {
+            if (isInputFieldModelLike(nextField) && !nextField.skipNextFocus) {
                 const nextFieldView = nextField.viewRef?.current;
                 if (nextFieldView) {
                     nextFieldView.focus();
