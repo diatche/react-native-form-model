@@ -19,6 +19,7 @@ export interface FormLabelProps extends ViewProps {
     textStyle?: TextProps['style'];
     selectable?: boolean;
     align?: FieldAlignment;
+    accessible?: boolean;
 }
 
 export default React.memo(function FormLabel({
@@ -28,6 +29,7 @@ export default React.memo(function FormLabel({
     textStyle,
     selectable,
     align = 'left',
+    accessible,
     ...props
 }: FormLabelProps) {
     const theme = useTheme() as PaperThemeWithForm;
@@ -50,7 +52,12 @@ export default React.memo(function FormLabel({
         </Text>
     );
     return onPress ? (
-        <TouchableOpacity {...props} onPress={onPress} style={containerStyle}>
+        <TouchableOpacity
+            {...props}
+            onPress={onPress}
+            style={containerStyle}
+            accessible={accessible}
+        >
             {label}
         </TouchableOpacity>
     ) : (

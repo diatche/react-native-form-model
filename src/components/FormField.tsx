@@ -248,6 +248,7 @@ const FormField: React.FC<FormFieldProps> = ({
             );
             inlineViews.push(
                 <FormLabel
+                    accessible
                     key={`${field.key}_label`}
                     title={dateString}
                     align={field.align}
@@ -307,6 +308,7 @@ const FormField: React.FC<FormFieldProps> = ({
             if (!isIntegrated) {
                 inlineViews.push(
                     <FormLabel
+                        accessible
                         key={`${field.key}_label`}
                         title={field.formatTime(time)}
                         align={field.align}
