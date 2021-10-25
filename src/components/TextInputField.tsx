@@ -105,7 +105,9 @@ export default class TextInputField<T = string> extends ControlField<
             onChangeText: userInput => this.handleUserInput({ userInput }),
             onSubmitEditing: event => {
                 this.handleBlur(event);
-                this.handleSubmit(event);
+                if (!multiline) {
+                    this.handleSubmit(event);
+                }
             },
             onEndEditing: event => this.handleBlur(event),
             onBlur: event => this.handleBlur(event),
