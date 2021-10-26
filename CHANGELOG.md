@@ -4,6 +4,10 @@
 
 Changes on `main` will be listed here.
 
+## 0.8.0
+
+26 Oct 2021
+
 ### Features
 
 -   [[#13](https://github.com/diatche/react-native-form-model/pull/13)] Input labels are now accessible.
