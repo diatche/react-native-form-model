@@ -20,6 +20,7 @@ import {
     OptionInputFieldModel,
     SwitchInputFieldModel,
     TimeInputFieldModel,
+    isInputFieldModelLike,
 } from '../models';
 import ButtonFieldModel from '../models/FieldModel/ButtonFieldModel';
 import ErrorFieldModel from '../models/FieldModel/ErrorFieldModel';
@@ -115,6 +116,23 @@ const FormField: React.FC<FormFieldProps> = ({
     let invisibleContainerField: JSX.Element | undefined;
     const inlineViews: React.ReactNode[] = [];
 
+    const focusNext = () => {
+        let didFocusNext = false;
+        for (const nextField of field.iterateNextFields()) {
+            if (isInputFieldModelLike(nextField) && !nextField.skipNextFocus) {
+                const nextFieldView = nextField.viewRef?.current;
+                if (nextFieldView) {
+                    nextFieldView.focus();
+                    didFocusNext = true;
+                    break;
+                }
+            }
+        }
+        if (!didFocusNext) {
+            field.form.onSubmit();
+        }
+    };
+
     if (field instanceof LabelFieldModel) {
         const { value: title } = useObservableIfNeeded(field.title);
         inlineViews.push(
@@ -187,6 +205,7 @@ const FormField: React.FC<FormFieldProps> = ({
                     }
                 }}
                 onBlur={commitState}
+                onSubmit={focusNext}
                 parse={x => field.parseState(x)}
                 format={x => field.formatValue(x)}
                 validate={x => field.normalizedValidationResult(x)}
@@ -199,6 +218,7 @@ const FormField: React.FC<FormFieldProps> = ({
                 selectTextOnFocus={field.selectTextOnFocus}
                 clearTextOnFocus={field.clearTextOnFocus}
                 clearButtonMode={field.clearButtonMode}
+                returnKeyType={field.returnKeyType}
                 align={field.align}
                 mode={field.mode}
                 style={[
@@ -248,6 +268,7 @@ const FormField: React.FC<FormFieldProps> = ({
             );
             inlineViews.push(
                 <FormLabel
+                    accessible
                     key={`${field.key}_label`}
                     title={dateString}
                     align={field.align}
@@ -307,6 +328,7 @@ const FormField: React.FC<FormFieldProps> = ({
             if (!isIntegrated) {
                 inlineViews.push(
                     <FormLabel
+                        accessible
                         key={`${field.key}_label`}
                         title={field.formatTime(time)}
                         align={field.align}
@@ -388,10 +410,12 @@ const FormField: React.FC<FormFieldProps> = ({
                     selectTextOnFocus={field.selectTextOnFocus}
                     clearTextOnFocus={field.clearTextOnFocus}
                     clearButtonMode={field.clearButtonMode}
+                    returnKeyType={field.returnKeyType}
                     onValueChange={state => {
                         editingStateRef.current = state;
                     }}
                     onBlur={commitState}
+                    onSubmit={focusNext}
                     align={field.align}
                     mode={field.mode}
                     style={[

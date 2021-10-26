@@ -4,6 +4,14 @@
 
 Changes on `main` will be listed here.
 
+### Features
+
+-   [[#13](https://github.com/diatche/react-native-form-model/pull/13)] Input labels are now accessible.
+-   [[#13](https://github.com/diatche/react-native-form-model/pull/13)] Select next form field on editing submit.
+    -   It's possible to skip fields when editing is submitted on a field with the `skipNextFocus` property.
+    -   When there are no more fields to focus after submitting, `onSubmit` is called on the form.
+-   [[#13](https://github.com/diatche/react-native-form-model/pull/13)] Added `returnKeyType` to `KeyboardInputFieldModel`.
+
 ## 0.7.0
 
 19 Oct 2021

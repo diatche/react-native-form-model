@@ -21,7 +21,7 @@ export interface KeyboardInputFieldModelOwnOptions
     extends KeyboardInputFieldModelBaseOptions,
         Pick<
             TextInputProps,
-            'textContentType' | 'autoCapitalize' | 'multiline'
+            'textContentType' | 'autoCapitalize' | 'multiline' | 'returnKeyType'
         > {
     type: KeyboardInputFieldType;
     keyboardType: KeyboardTypeOptions;
@@ -56,6 +56,7 @@ export default class KeyboardInputFieldModel<T>
     type: KeyboardInputFieldType;
     mode: KeyboardInputFieldModelOwnOptions['mode'] | undefined;
     keyboardType: KeyboardTypeOptions;
+    returnKeyType: TextInputProps['returnKeyType'];
     textContentType: TextInputProps['textContentType'] | undefined;
     optional: boolean;
     multiline: boolean;
@@ -76,6 +77,7 @@ export default class KeyboardInputFieldModel<T>
         this.mode = optionsWithDefaults.mode;
         this.validation = optionsWithDefaults.validation;
         this.keyboardType = optionsWithDefaults.keyboardType;
+        this.returnKeyType = optionsWithDefaults.returnKeyType;
         this.textContentType = optionsWithDefaults.textContentType;
         this.optional = optionsWithDefaults.optional;
         this.autoCapitalize = optionsWithDefaults.autoCapitalize;

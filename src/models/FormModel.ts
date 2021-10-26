@@ -6,12 +6,14 @@ type ForwardElementOptions = Omit<FormElementOptions, 'form'>;
 
 export interface FormModelOptions extends ForwardElementOptions {
     showErrors?: boolean;
+    onSubmit?: () => void;
 }
 
 export default class FormModel extends FormElement {
     sections: SectionModel[] = [];
     showErrors: boolean;
     style?: FormStyle;
+    onSubmit: () => void;
 
     get form(): FormModel {
         return this;
@@ -21,8 +23,9 @@ export default class FormModel extends FormElement {
 
     constructor(options: FormModelOptions = {}) {
         super({ ...options, form: {} as FormModel });
-        const { showErrors = false } = options;
+        const { showErrors = false, onSubmit = () => {} } = options;
         this.showErrors = showErrors;
+        this.onSubmit = onSubmit;
     }
 
     static create(options?: FormModelOptions): FormModel {

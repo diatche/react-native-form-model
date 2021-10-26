@@ -6,6 +6,7 @@ import { lz } from '../../util/locale';
 import { EditableFieldModel } from '../FormElement';
 import FormError, { FormParseError, FormValidationError } from '../FormError';
 import {
+    InputFieldModelLike,
     InputFieldValidationResult,
     InputFieldValidationValue,
     InputFieldViewRef,
@@ -28,6 +29,11 @@ export interface InputFieldModelOptions<T, I = string>
     defaultValue?: T;
     placeholder?: string;
     disabled?: boolean;
+    /**
+     * If true, this field will be skipped, when the previous
+     * submitted field is searching for the next field to focus.
+     */
+    skipNextFocus?: boolean;
     /** Parse an input value or throw an error. */
     parseInput: (input: I) => T;
     formatValue?: (value: T | undefined) => string;
@@ -46,13 +52,14 @@ export type ParsedInputFieldModelOptions<T, I> = Omit<
 
 export default class InputFieldModel<T, I = string>
     extends FieldModel
-    implements EditableFieldModel
+    implements EditableFieldModel, InputFieldModelLike<T>
 {
     readonly value: BehaviorSubject<T>;
     readonly edited: BehaviorSubject<boolean>;
     defaultValue: T;
     placeholder: string;
     disabled: boolean;
+    skipNextFocus: boolean;
     /** Parse an input value or throw an error. */
     parseInput: (input: I) => T;
     formatValue: (value: T | undefined) => string;
@@ -68,6 +75,7 @@ export default class InputFieldModel<T, I = string>
             defaultValue = options.value.value,
             placeholder = '',
             disabled = false,
+            skipNextFocus = false,
             formatValue = x =>
                 x === null || typeof x === 'undefined' ? '' : String(x),
             parseInput,
@@ -77,6 +85,7 @@ export default class InputFieldModel<T, I = string>
         this.edited = new BehaviorSubject<boolean>(false);
         this.placeholder = placeholder;
         this.disabled = disabled;
+        this.skipNextFocus = skipNextFocus;
         this.parseInput = parseInput;
         this.formatValue = formatValue;
         this.validation = options.validation;

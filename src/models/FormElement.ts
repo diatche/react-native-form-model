@@ -245,6 +245,40 @@ export default abstract class FormElement {
         }
     }
 
+    *iterateNextFields(): Generator<FieldModel> {
+        if (!this.form) {
+            return;
+        }
+        const sectionMax = this.form.sections?.length || 0;
+        let rowIndexUsed = 0;
+        let fieldIndexUsed = 0;
+        for (
+            let sectionIndex = Math.max(0, this.sectionIndex);
+            sectionIndex < sectionMax;
+            sectionIndex++
+        ) {
+            const section = this.form.sections[sectionIndex];
+            const rowMax = section.rows.length;
+            for (
+                let rowIndex = rowIndexUsed++ ? 0 : Math.max(0, this.rowIndex);
+                rowIndex < rowMax;
+                rowIndex++
+            ) {
+                const row = section.rows[rowIndex];
+                const fieldMax = row.fields.length;
+                for (
+                    let fieldIndex = fieldIndexUsed++
+                        ? 0
+                        : Math.max(0, this.fieldIndex + 1);
+                    fieldIndex < fieldMax;
+                    fieldIndex++
+                ) {
+                    yield row.fields[fieldIndex];
+                }
+            }
+        }
+    }
+
     resolveStyle(theme?: PartialFormStyle): Required<FormStyle> {
         let style: Required<FormStyle> = _.merge({}, kDefaultFormStyle, theme);
         if (this.form) {

@@ -21,6 +21,7 @@ export interface InputFieldModelLike<T> extends FieldModelLike {
     value: BehaviorSubject<T>;
     validate: () => InputFieldValidationResult;
     viewRef?: InputFieldViewRef;
+    skipNextFocus: boolean;
 }
 
 export interface InputFieldViewLike {
@@ -33,7 +34,7 @@ export interface InputFieldViewRef {
 }
 
 export function isFieldModelLike(value: any): value is FieldModelLike {
-    return 'errors' in value;
+    return value && typeof value === 'object' && 'errors' in value;
 }
 
 export function isInputFieldModelLike(
