@@ -4,6 +4,7 @@ import { Observable, Subscription } from 'rxjs';
 
 import { lz } from '../../util/locale';
 import { MaybeObservable } from '../../util/reactUtil';
+import { ViewRef } from '../formTypes';
 import InputFieldModel, {
     ParsedInputFieldModelOptions,
 } from './InputFieldModel';
@@ -25,6 +26,7 @@ export default class TimeInputFieldModel
     futureDisabled: boolean;
     autoFocus: boolean;
     optional: boolean;
+    returnKeyType: TextInputProps['returnKeyType'];
     clearTextOnFocus: boolean;
     selectTextOnFocus: boolean;
     clearButtonMode: TextInputProps['clearButtonMode'];
@@ -70,6 +72,7 @@ export default class TimeInputFieldModel
         this.futureDisabled = futureDisabled;
         this.autoFocus = autoFocus;
         this.optional = optional;
+        this.returnKeyType = options.returnKeyType;
         this.clearTextOnFocus = clearTextOnFocus;
         this.selectTextOnFocus = selectTextOnFocus;
         this.clearButtonMode = clearButtonMode;
@@ -93,8 +96,8 @@ export default class TimeInputFieldModel
         return moment().startOf('day').add(time).format('LT');
     }
 
-    onMount() {
-        super.onMount();
+    onMount(viewRef: ViewRef) {
+        super.onMount(viewRef);
 
         this._refDaySub = undefined;
         this._refDay = undefined;
@@ -110,8 +113,8 @@ export default class TimeInputFieldModel
         this.validate();
     }
 
-    onUnmount() {
-        super.onUnmount();
+    onUnmount(viewRef: ViewRef) {
+        super.onUnmount(viewRef);
         this._refDaySub?.unsubscribe();
         this._refDaySub = undefined;
     }

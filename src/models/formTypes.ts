@@ -13,24 +13,26 @@ export interface InputFieldValidationResult {
     error?: FormValidationError;
 }
 
-export interface FieldModelLike {
+export interface FieldModelLike<View extends FieldViewLike = any> {
     errors: BehaviorSubject<Error[]>;
+    viewRef?: ViewRef<View>;
 }
 
 export interface InputFieldModelLike<T> extends FieldModelLike {
     value: BehaviorSubject<T>;
     validate: () => InputFieldValidationResult;
-    viewRef?: InputFieldViewRef;
     skipNextFocus: boolean;
 }
+
+export interface FieldViewLike {}
 
 export interface InputFieldViewLike {
     focus: () => void;
     blur: () => void;
 }
 
-export interface InputFieldViewRef {
-    current?: InputFieldViewLike | null;
+export interface ViewRef<T extends FieldViewLike = any> {
+    current?: T | null;
 }
 
 export function isFieldModelLike(value: any): value is FieldModelLike {
