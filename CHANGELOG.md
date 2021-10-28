@@ -4,13 +4,18 @@
 
 Changes on `main` will be listed here.
 
-## 0.8.0
+## 0.9.0
 
-26 Oct 2021
+28 Oct 2021
 
 ### Features
 
 -   [[#14](https://github.com/diatche/react-native-form-model/pull/14)] Added `autoFocus` to `InputFieldModel`.
+
+## 0.8.0
+
+26 Oct 2021
+
 -   [[#13](https://github.com/diatche/react-native-form-model/pull/13)] Input labels are now accessible.
 -   [[#13](https://github.com/diatche/react-native-form-model/pull/13)] Select next form field on editing submit.
     -   It's possible to skip fields when editing is submitted on a field with the `skipNextFocus` property.
