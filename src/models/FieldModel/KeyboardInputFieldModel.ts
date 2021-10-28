@@ -10,10 +10,12 @@ import InputFieldModel, {
 export interface KeyboardInputFieldModelBaseOptions
     extends Pick<
         TextInputProps,
-        'clearTextOnFocus' | 'selectTextOnFocus' | 'clearButtonMode'
+        | 'clearTextOnFocus'
+        | 'selectTextOnFocus'
+        | 'clearButtonMode'
+        | 'returnKeyType'
     > {
     optional?: boolean;
-    autoFocus?: boolean;
     mode?: 'plain' | 'contained';
 }
 
@@ -21,7 +23,7 @@ export interface KeyboardInputFieldModelOwnOptions
     extends KeyboardInputFieldModelBaseOptions,
         Pick<
             TextInputProps,
-            'textContentType' | 'autoCapitalize' | 'multiline' | 'returnKeyType'
+            'textContentType' | 'autoCapitalize' | 'multiline'
         > {
     type: KeyboardInputFieldType;
     keyboardType: KeyboardTypeOptions;

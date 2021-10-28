@@ -15,6 +15,7 @@ import {
     CustomFieldModel,
     DateInputFieldModel,
     FieldModel,
+    InputFieldViewLike,
     KeyboardInputFieldModel,
     LabelFieldModel,
     OptionInputFieldModel,
@@ -120,7 +121,8 @@ const FormField: React.FC<FormFieldProps> = ({
         let didFocusNext = false;
         for (const nextField of field.iterateNextFields()) {
             if (isInputFieldModelLike(nextField) && !nextField.skipNextFocus) {
-                const nextFieldView = nextField.viewRef?.current;
+                const nextFieldView: InputFieldViewLike | undefined =
+                    nextField.viewRef?.current;
                 if (nextFieldView) {
                     nextFieldView.focus();
                     didFocusNext = true;
@@ -534,13 +536,13 @@ const FormField: React.FC<FormFieldProps> = ({
 
     React.useEffect(() => {
         field.isMounted = true;
-        field.onMount();
+        // Workaround until all fields have a view ref
+        const viewRef = field.viewRef || { current: null };
+        field.onMount(viewRef);
         return () => {
-            field.onUnmount();
+            field.onUnmount(viewRef);
+            field.viewRef = undefined;
             field.isMounted = false;
-            if (field instanceof InputFieldModel) {
-                field.viewRef = undefined;
-            }
         };
     }, [field]);
 

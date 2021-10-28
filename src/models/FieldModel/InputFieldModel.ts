@@ -2,6 +2,7 @@ import _ from 'lodash';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import { InputFieldViewLike } from '..';
 import { lz } from '../../util/locale';
 import { EditableFieldModel } from '../FormElement';
 import FormError, { FormParseError, FormValidationError } from '../FormError';
@@ -9,7 +10,7 @@ import {
     InputFieldModelLike,
     InputFieldValidationResult,
     InputFieldValidationValue,
-    InputFieldViewRef,
+    ViewRef,
 } from '../formTypes';
 import FieldModel, { FieldModelOptions } from './FieldModel';
 
@@ -29,6 +30,7 @@ export interface InputFieldModelOptions<T, I = string>
     defaultValue?: T;
     placeholder?: string;
     disabled?: boolean;
+    autoFocus?: boolean;
     /**
      * If true, this field will be skipped, when the previous
      * submitted field is searching for the next field to focus.
@@ -50,8 +52,12 @@ export type ParsedInputFieldModelOptions<T, I> = Omit<
 > &
     Partial<Pick<InputFieldModelOptions<T, I>, 'parseInput'>>;
 
-export default class InputFieldModel<T, I = string>
-    extends FieldModel
+export default class InputFieldModel<
+        T,
+        I = string,
+        View extends InputFieldViewLike = any
+    >
+    extends FieldModel<View>
     implements EditableFieldModel, InputFieldModelLike<T>
 {
     readonly value: BehaviorSubject<T>;
@@ -59,15 +65,16 @@ export default class InputFieldModel<T, I = string>
     defaultValue: T;
     placeholder: string;
     disabled: boolean;
+    autoFocus: boolean;
     skipNextFocus: boolean;
     /** Parse an input value or throw an error. */
     parseInput: (input: I) => T;
     formatValue: (value: T | undefined) => string;
     validation?: (value?: T) => InputFieldValidationValue;
-    viewRef?: InputFieldViewRef;
     delegate?: InputFieldModelDelegate<T, I>;
 
     private _onValueChangeCb?: InputFieldModelOptions<T, I>['onValueChange'];
+    private _didAutoFocus = false;
 
     constructor(options: InputFieldModelOptions<T, I>) {
         super(options);
@@ -75,6 +82,7 @@ export default class InputFieldModel<T, I = string>
             defaultValue = options.value.value,
             placeholder = '',
             disabled = false,
+            autoFocus = false,
             skipNextFocus = false,
             formatValue = x =>
                 x === null || typeof x === 'undefined' ? '' : String(x),
@@ -85,6 +93,7 @@ export default class InputFieldModel<T, I = string>
         this.edited = new BehaviorSubject<boolean>(false);
         this.placeholder = placeholder;
         this.disabled = disabled;
+        this.autoFocus = autoFocus;
         this.skipNextFocus = skipNextFocus;
         this.parseInput = parseInput;
         this.formatValue = formatValue;
@@ -252,8 +261,16 @@ export default class InputFieldModel<T, I = string>
         }
     }
 
-    onUnmount() {
-        super.onUnmount();
+    onMount(viewRef: ViewRef<View>) {
+        super.onMount(viewRef);
+        if (this.autoFocus && !this._didAutoFocus) {
+            this._didAutoFocus = true;
+            viewRef.current?.focus();
+        }
+    }
+
+    onUnmount(viewRef: ViewRef<View>) {
+        super.onUnmount(viewRef);
         this.edited.next(false);
     }
 }

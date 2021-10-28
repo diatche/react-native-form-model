@@ -8,5 +8,7 @@ module.exports = {
                 ignoreDeclarationSort: true,
             },
         ],
+        // TODO: Fix these and then treat as error
+        'react-hooks/rules-of-hooks': 'warn',
     },
 };

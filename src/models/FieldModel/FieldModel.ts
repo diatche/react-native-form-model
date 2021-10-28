@@ -5,6 +5,7 @@ import FormElement, {
     EditableFieldModel,
     FormElementOptions,
 } from '../FormElement';
+import { FieldModelLike, FieldViewLike, ViewRef } from '../formTypes';
 
 export type FieldAlignment = 'left' | 'center' | 'right';
 
@@ -18,7 +19,10 @@ export interface FieldModelOptions extends FormElementOptions {
     visible?: MaybeObservable<boolean>;
 }
 
-export default class FieldModel extends FormElement {
+export default class FieldModel<View extends FieldViewLike = any>
+    extends FormElement
+    implements FieldModelLike<View>
+{
     readonly errors: BehaviorSubject<Error[]>;
     sectionIndex: number;
     rowIndex: number;
@@ -26,6 +30,7 @@ export default class FieldModel extends FormElement {
     align: FieldAlignment;
     flex?: number;
     visible: MaybeObservable<boolean>;
+    viewRef?: ViewRef<View>;
 
     /**
      * Whether this field is currently rendered on the screen.
@@ -55,11 +60,11 @@ export default class FieldModel extends FormElement {
      *
      * Subclasses must call the super implementation.
      */
-    onMount() {}
+    onMount(viewRef: ViewRef<View>) {}
 
     /** Called before the view is unmounted.
      *
      * Subclasses must call the super implementation.
      */
-    onUnmount() {}
+    onUnmount(viewRef: ViewRef<View>) {}
 }
