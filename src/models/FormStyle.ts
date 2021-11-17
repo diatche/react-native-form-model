@@ -80,9 +80,9 @@ export const kDefaultLightFormColors: RequiredFormColors = {
 export const kDefaultDarkFormColors: RequiredFormColors = {
     label: Colors.grey100,
     input: Colors.blue400,
-    error: Colors.red300,
+    error: Colors.red600,
     disabled: Colors.grey300,
-    destructive: Colors.red300,
+    destructive: Colors.red600,
     buttonForeground: Colors.black,
     buttonBackground: Colors.blue400,
     sectionTitle: Colors.grey300,

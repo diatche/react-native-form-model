@@ -4,6 +4,8 @@
 
 Changes on `main` will be listed here.
 
+-   Deeper reds in dark mode color defaults.
+
 ## 0.9.0
 
 28 Oct 2021
